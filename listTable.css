@@ -1,0 +1,31 @@
+.listTable > thead > tr > th{
+	background: blue;
+	color: white;
+	border-radius: 3px;
+	padding: 5px;
+}
+.listTable > tbody > tr > td{
+	background: whitesmoke;
+	text-align: center;
+	border-radius: 3px;
+}
+.listTable > tfoot > tr > td{
+	text-align: center;
+}
+.listTable > tfoot > tr.showMore > td > a{
+	text-decoration: none;
+	display: inline-block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 100%;
+	font-weight: bold;
+	background: darkred;
+	color: white;
+	border-radius: 5px;
+}
+.listTable > tfoot > tr.showMore > td > a:hover{
+	background: red;
+}
+.listTable > tfoot > tr.showMore > td > progress{
+	width: 100%;
+}
