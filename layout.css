@@ -1,0 +1,120 @@
+/*TODO Add Wrapper*/
+#pageTopBar{
+	background: #094AB2;
+	color: white;
+	height: 40px;
+}
+#pageTopBarLeft{
+	margin-top: 10px;
+	float: left;
+}
+#pageTopBarRight{
+	margin-top: 10px;
+	float: right;
+}
+#pageTopBar  a{
+	color: white;
+	text-decoration: none;
+}
+#pageTopBar  a:hover{
+	text-decoration: underline;
+}
+#sidePanel{
+	background: whitesmoke;
+	float: left;
+	width: 200px;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+#homepage{
+	display: inline-block;
+	margin: 10px;
+}
+#returnFullSidePanel{
+	text-decoration: none;
+	position: absolute;
+	bottom: 10px;
+	display: block;
+	font-size: x-large;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #606060;
+	width: 100%;
+	text-align: center;
+	transition: color .5s;
+	-webkit-transition: color .5s;
+	-moz-transition: color .5s;
+	-o-transition: color .5s;
+	transition: margin .5s;
+	-webkit-transition: margin .5s;
+	-moz-transition: margin .5s;
+	-o-transition: margin .5s;
+}
+#returnFullSidePanel:hover{
+	color: #202020;
+	margin-left: -10px;
+}
+#mainArea{
+	position: relative;
+	margin-left: 200px;
+	height: 100%;
+	overflow: hidden;
+}
+#mainTopBar{
+	margin-left: 10px;
+	height: 20px;
+	border-bottom: lightgray solid 2px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+#mainTopBarLeft{
+	float: left;
+}
+#mainTopBarRight{
+	float: right;
+}
+#pageTitle{
+	display: inline-block;
+	font-size: large;
+	margin: 0;
+}
+#main{
+	padding: 10px;
+	overflow: auto;
+}
+#mainBottomBar{
+	position: absolute;
+	bottom: 0;
+	border-top: lightgray solid 2px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	height: 20px;
+	width: 100%;
+	color: #404040;
+	font-family: sans-serif;
+}
+
+.metroBlock{
+	display: inline-block;
+	font-size: x-large;
+	margin: 10px;
+	cursor: pointer;
+	
+}
+.metroBlock.small{
+	width: 180px;
+	height: 100px;
+}
+.metroBlock.big{
+	width: 250px;
+	height: 120px;
+	opacity: .6;
+	transition: opacity .5s;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-o-transition: opacity .5s;
+}
+.metroBlock.big:hover{
+	opacity: 1;
+}
