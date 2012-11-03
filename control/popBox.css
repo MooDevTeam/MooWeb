@@ -1,0 +1,42 @@
+.wholepage{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.blackout{
+	opacity: .5;
+	background: black;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+#popBox{
+	position: absolute;
+	left: 15%;
+	top: 15%;
+	width: 70%;
+	height: 70%;
+	background: whitesmoke;
+	z-index: 1;
+	border-radius: 10px;
+	box-shadow: 0 0 30px black;
+}
+#windowBar{
+	background: #202020;
+	margin: 5px;
+	border-radius: 5px;
+	padding-left: 5px;
+	text-align: center;
+}
+#windowTitle{
+	color: lightgray;
+	font-family: sans-serif;
+}
+#windowBody{
+	width: 100%;
+	display: table;
+}

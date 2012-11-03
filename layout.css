@@ -6,15 +6,16 @@
 }
 #pageTopBarLeft{
 	margin-top: 10px;
+	margin-left: 10px;
 	float: left;
 }
 #pageTopBarRight{
 	margin-top: 10px;
+	margin-right: 10px;
 	float: right;
 }
 #pageTopBar  a{
 	color: white;
-	text-decoration: none;
 }
 #pageTopBar  a:hover{
 	text-decoration: underline;
@@ -22,17 +23,26 @@
 #sidePanel{
 	background: whitesmoke;
 	float: left;
-	width: 200px;
 	height: 100%;
 	overflow: hidden;
 	position: relative;
+}
+#sidePanel.normal{
+	width: 200px;
+}
+#sidePanel.hidden{
+	width: 200px;
+	margin-left: -180px;
+}
+#sidePanel.full{
+	width: 200px;
+	width: 100%;
 }
 #homepage{
 	display: inline-block;
 	margin: 10px;
 }
-#returnFullSidePanel{
-	text-decoration: none;
+#backToHomepage{
 	position: absolute;
 	bottom: 10px;
 	display: block;
@@ -51,18 +61,25 @@
 	-moz-transition: margin .5s;
 	-o-transition: margin .5s;
 }
-#returnFullSidePanel:hover{
+#backToHomepage:hover{
 	color: #202020;
 	margin-left: -10px;
 }
 #mainArea{
 	position: relative;
-	margin-left: 200px;
 	height: 100%;
 	overflow: hidden;
 }
+#mainArea.normal{
+	margin-left: 200px;
+}
+#mainArea.full{
+	margin-left: 20px;
+}
+#mainArea.hidden{
+	margin-left: 100%;
+}
 #mainTopBar{
-	margin-left: 10px;
 	height: 20px;
 	border-bottom: lightgray solid 2px;
 	padding-top: 10px;
@@ -75,12 +92,13 @@
 	float: right;
 }
 #pageTitle{
-	display: inline-block;
+	margin-left: 10px;
 	font-size: large;
-	margin: 0;
+	font-weight: bold;
+	color: #404040;
+	font-family: sans-serif;
 }
 #main{
-	padding: 10px;
 	overflow: auto;
 }
 #mainBottomBar{
@@ -109,7 +127,7 @@
 .metroBlock.big{
 	width: 250px;
 	height: 120px;
-	opacity: .6;
+	opacity: .7;
 	transition: opacity .5s;
 	-webkit-transition: opacity .5s;
 	-moz-transition: opacity .5s;

@@ -1,0 +1,27 @@
+.msgBarContainer{
+	position: absolute;
+	top: 40px;
+	width: 100%;
+	z-index: 2;
+}
+.msgBar{
+	padding: 8px;
+	text-align: center;
+}
+.msgBar.info{
+	background: #55DD55;
+	border-bottom: #009900 solid 5px;
+}
+.msgBar.warning{
+	background: gold;
+	border-bottom: orange solid 5px;
+}
+.msgBar.error{
+	background: orangered;
+	border-bottom: red solid 5px;
+}
+.msgBar > .close{
+	color: #202020;
+	font-weight: bold;
+	float: right;
+}

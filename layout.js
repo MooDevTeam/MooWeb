@@ -1,50 +1,43 @@
-var Layout={};
+﻿var Layout={};
 
-Layout.buildPage=function(){
+Layout.speed='slow';
+
+Layout.init=function(){
 	$('body')
 		.append($('<div id="pageTopBar"/>')
-			.append('<div id="pageTopBarLeft"/>')
-			.append('<div id="pageTopBarRight"/>')
+			.append('<div id="pageTopBarLeft">Moo Online Judge</div>')
+			.append($('<div id="pageTopBarRight"/>')
+				.append('<div id="notLoggedIn" style="display: none"><a id="loginLink" href="#">登录</a></div>')
+				.append('<div id="loggedIn" style="display: none"><span id="loggedUserName"/> | <a id="logoutLink" href="#">登出</a></div>'))
 			.append('<div class="clear"/>'))
 		.append($('<div id="pageBody"/>')
-			.append($('<div id="sidePanel"/>')
-				.append('<a href="#" id="returnFullSidePanel">&lt;&lt; Back &lt;&lt;</a>')
+			.append($('<div id="sidePanel" class="full"/>')
+				.append($('<a href="#" id="backToHomepage">&lt;&lt; Back &lt;&lt;</a>').hide())
 				.append('<div id="homepage"/>'))
-			.append($('<div id="mainArea">')
+			.append($('<div id="mainArea" class="hidden">')
 				.append($('<div id="mainTopBar"/>')
-					.append('<h1 id="pageTitle"/>')
+					.append($('<a id="pageTitle"/>'))
 					.append('<div id="mainTopBarRight"/>'))
 				.append('<div id="main"/>')
-				.append('<div id="mainBottomBar"/>'))
+				.append('<div id="mainBottomBar">&copy; 2012 Mr.Phone</div>'))
 			.append('<div class="clear"/>'));
-	
-	//CSS Values
-	var sampleElement=$('<div/>');
-	$('body').append(sampleElement);
-	Layout.sidePanelWidth=$('#sidePanel').width();
-	
-	sampleElement.addClass('metroBlock').addClass('big');
-	Layout.bigMetroBlockWidth=sampleElement.width()
-	Layout.bigMetroBlockHeight=sampleElement.height();
-	
-	sampleElement.removeClass('big').addClass('small');
-	Layout.smallMetroBlockWidth=sampleElement.width();
-	Layout.smallMetroBlockHeight=sampleElement.height();
-	sampleElement.remove();
 	
 	//Auto Hide
 	$('#sidePanel')
 		.hover(function(){
 			if(Layout.mode=='FullMain'){
-				Layout.asNormal();
+				Layout.showSidePanel();
 			}
 		},function(){
 			if(Layout.mode=='Normal'){
-				setTimeout(Layout.asFullMain,500);
+				setTimeout(function(){
+					if(Layout.mode=='Normal')
+						Layout.hideSidePanel();
+				},500);
 			}
 		});
-	$('#returnFullSidePanel').click(function(){
-		Layout.asFullSidePanel();
+	$('#backToHomepage').click(function(){
+		Page.backToHomepage();
 		return false;
 	});
 	
@@ -58,151 +51,130 @@ Layout.cssTricks=function(){
 
 $(window).resize(Layout.cssTricks);
 
-Layout.appendMetroBlock=function(theDiv,onclick){
-	theDiv.addClass('metroBlock');
+//Switch between layouts
+
+Layout.mode='FullSidePanel';
+
+/**
+	Homepage to normal
+*/
+Layout.showMetroBlock=function(block,callback){
+	assert(Layout.mode=='FullSidePanel');
 	
-	var index=$('#sidePanel .metroBlock').length;
-	if(index % 2 == 0){
-		theDiv.css({
-			'float':'left',
-			'clear':'left'
-		});
-	}else{
-		theDiv.css({
-			'float':'right',
-			'clear':'right'
-		});
+	stepOne();
+	
+	function stepOne(){
+		Layout.mode=undefined;
+	
+		$('#sidePanel .metroBlock').not(block)
+			.slideUp(Layout.speed);
+		$('#sidePanel .metroBlock').switchClass('big','small',Layout.speed);
+		
+		$('#homepage').stop().fadeOut(Layout.speed,stepTwo);
 	}
 	
-	theDiv.click(function(){
-		if(Layout.mode=='FullSidePanel'){
-			$('#mainTopBar,#mainBottomBar')
-				.css('border-color',$(this).css('background-color'));
-			$('#homepage').fadeOut('slow');
-			$('#sidePanel .metroBlock').not(this)
-				.slideUp('slow',function(){
-					Layout.asNormal();
-				});
-			$(this).animate({
-				width:Layout.smallMetroBlockWidth,
-				height:Layout.smallMetroBlockHeight
-			},'slow',function(){
-				$(this)
-					.css({
-						width:'',
-						height:'',
-					})
-					.removeClass('big')
-					.addClass('small');
-				$('#returnFullSidePanel').fadeIn('slow');
-				if(onclick && onclick instanceof Function){
-					onclick();
-				}
-			});
-		}else if(onclick && onclick instanceof Function){
-			onclick();
-		}
-	});
+	function stepTwo(){
+		$('#main').hide();
+		
+		$('#sidePanel').switchClass('full','normal',Layout.speed);
+		$('#mainArea').switchClass('hidden','normal',Layout.speed);
+		$('#backToHomepage').fadeIn(Layout.speed,stepThree);
+	}
 	
-	$('#sidePanel').append(theDiv);
-	return Layout;
+	function stepThree(){
+		$('#main').fadeIn(Layout.speed);
+		
+		Layout.mode='Normal';
+		if(callback && callback instanceof Function){
+			callback();
+		}
+	}
 }
 
-Layout.mode='Normal';
-
-Layout.asFullMain=function(speed,callback){
-	if(!Layout.mode || Layout.mode=='FullMain') return;
-	Layout.mode=undefined;
-	if(speed===undefined)
-		speed='slow';
+/**
+	Between normal
+*/
+Layout.switchMetroBlock=function(block,callback){
+	assert(Layout.mode=='Normal' || Layout.mode=='FullMain');
 	
-	$('#sidePanel')
-		.css('float','left')
-		.animate({
-			'margin-left':-Layout.sidePanelWidth+20,
-			'width':Layout.sidePanelWidth
-		},speed);
-	$('#mainArea')
-		.css('display','block')
-		.animate({
-			'margin-left':20
-		},speed,function(){
-			if(!Layout.mode){
-				Layout.mode='FullMain';
-				if(callback && callback instanceof Function){
-					callback();
-				}
+	if(Layout.mode=='FullMain'){
+		Layout.showSidePanel(stepOne);
+	}else if(Layout.mode=='Normal'){
+		stepOne();
+	}
+	
+	function stepOne(){
+		$('#sidePanel .metroBlock:visible').slideUp(Layout.speed);
+		block.slideDown(Layout.speed,function(){
+			if(callback && callback instanceof Function){
+				callback();
 			}
 		});
-};
+	}
+}
 
-Layout.asNormal=function(speed,callback){
-	if(!Layout.mode || Layout.mode=='Normal') return;
-	Layout.mode=undefined;
-	if(speed===undefined)
-		speed='slow';
+/**
+	Back to Homepage
+*/
+Layout.backToHomepage=function(callback){
+	assert(Layout.mode=='Normal' || Layout.mode=='FullMain');
 	
-	$('#sidePanel')
-		.css('float','left')
-		.animate({
-			'margin-left':0,
-			'width':Layout.sidePanelWidth
-		},speed);
-	$('#mainArea')
-		.css('display','block')
-		.animate({
-			'margin-left':Layout.sidePanelWidth
-		},speed,function(){
-			if(!Layout.mode){
-				Layout.mode='Normal';
-				if(callback && callback instanceof Function)
-					callback();
-			}
-		});
-};
+	if(Layout.mode=='FullMain'){
+		Layout.showSidePanel(stepOne);
+	}else{
+		stepOne();
+	}
+	
+	function stepOne(){
+		$('#sidePanel').switchClass('normal','full',Layout.speed,stepTwo);
+		$('#mainArea').switchClass('normal','hidden',Layout.speed);
+		$('#backToHomepage').fadeOut(Layout.speed);
+		
+		$('#sidePanel .metroBlock').switchClass('small','big',Layout.speed);
+	}
+	
+	function stepTwo(){
+		$('#homepage').hide().fadeIn(Layout.speed);
+		$('#sidePanel .metroBlock:hidden')
+			.slideDown(Layout.speed);
+		Layout.mode='FullSidePanel';
+		if(callback && callback instanceof Function)
+			callback();
+	}
+}
 
-Layout.asFullSidePanel=function(speed,callback){
-	if(!Layout.mode || Layout.mode=='FullSidePanel') return;
-	Layout.mode=undefined;
-	if(speed===undefined)
-		speed='slow';
+/**
+	Hide the side panel
+*/
+Layout.hideSidePanel=function(callback){
+	assert(Layout.mode=='Normal');
 	
-	$('#sidePanel')
-		.animate({
-			'margin-left':0,
-			'width':$(window).width()
-		},speed,function(){
-			$(this).css('float','none');
-			$(this).width('100%');
-			$('#homepage').hide().fadeIn('slow');
-		});
-	
-	$('#mainArea').animate({
-		'margin-left':$(window).width(),
-	},speed,function(){
-		$(this).css('display','none');
+	$('#mainArea').switchClass('normal','full',Layout.speed);
+	$('#sidePanel').switchClass('normal','hidden',Layout.speed,function(){
+		Layout.mode='FullMain';
+		if(callback && callback instanceof Function){
+			callback();
+		}
 	});
+};
+
+/**
+	Show the side panel
+*/
+Layout.showSidePanel=function(callback){
+	assert(Layout.mode=='FullMain');
 	
-	$('#returnFullSidePanel').fadeOut(speed);
-	
-	$('#sidePanel .metroBlock')
-		.animate({
-			'width':Layout.bigMetroBlockWidth,
-			'height':Layout.bigMetroBlockHeight,
-		},speed,function(){
-			$('#sidePanel .metroBlock')
-				.css({
-					width:'',
-					height:''
-				})
-				.removeClass('selected')
-				.addClass('big');
-			$('#sidePanel .metroBlock:hidden')
-				.slideDown(speed);
-			if(!Layout.mode){
-				Layout.mode='FullSidePanel';
-				if(callback && callback instanceof Function)
-					callback();
-			}
-		});
+	//FIXME Bug: mainArea disappear when animating
+	//$('#mainArea').switchClass('full','normal',Layout.speed);
+	$('#mainArea').animate({
+		'margin-left': '200px'
+	},Layout.speed,function(){
+		$('#mainArea').css('margin-left','').removeClass('full').addClass('normal');
+	});
+	$('#sidePanel').switchClass('hidden','normal',Layout.speed,function(){
+		Layout.mode='Normal';
+		if(callback && callback instanceof Function){
+			callback();
+		}
+	});
 };

@@ -1,0 +1,80 @@
+.listTableWrapper{
+	height: 100%;
+	overflow: auto;
+}
+.listTableWrapper > .menu{
+	position: fixed;
+	background: white;
+	list-style: none;
+	margin: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 0;
+	padding-right: 0;
+	border: black solid 3px;
+	box-shadow: 0 0 3px black;
+}
+.listTableWrapper > .menu > li > a {
+	display: block;
+	color: #404040;
+	font-family: sans-serif;
+	font-weight: bold;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.listTableWrapper > .menu > li > a:hover{
+	background: lightgray;
+}
+.listTableWrapper > .menu > li > a:active{
+	background: black;
+	color: lightgray;
+}
+.listTable{
+	width: 100%;
+	border-collapse: collapse;
+}
+.listTable > thead > tr > th{
+	padding: 5px;
+	font-weight: normal;
+	text-align: left;
+}
+.listTable > tbody > tr > td{
+	padding: 5px;
+}
+.listTable > tbody > tr{
+	color: #404040;
+}
+.listTable > tbody > tr:hover{
+	background: lightgray;
+}
+.listTable > tbody > tr.selected{
+	background: #094AB2;
+	color: whitesmoke;
+	font-weight: bold;
+}
+.listTable > tbody > tr.selected > td > a{
+	color: whitesmoke;
+}
+.listTable > tfoot > tr > td{
+	text-align: center;
+}
+.listTable > tfoot > tr.showMore > td > a{
+	display: inline-block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 100%;
+	background: lightgray;
+	color: #202020;
+	transition: background-color .5s;
+	-webkit-transition: background-color .5s;
+	-moz-transition: background-color .5s;
+	-o-transition: background-color .5s;
+}
+.listTable > tfoot > tr.showMore > td > a:hover{
+	background: whitesmoke;
+}
+.listTable > tfoot > tr.showMore > td > progress{
+	width: 100%;
+}
