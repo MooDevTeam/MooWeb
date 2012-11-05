@@ -1,42 +1,43 @@
+"use strict";
 var MetroBlock={};
 
 MetroBlock.item={
-	problem: $('<div style="background: green;">Problem</div>')
+	problem: $('<div style="background: green;"><div class="title">Problem</div></div>')
 		.click(function(){
 			Page.item.problemList.load();
 			return false;
 		}),
-	record: $('<div style="background: blue;">Record</div>')
+	record: $('<div style="background: blue;"><div class="title">Record</div></div>')
 		.click(function(){
 			Page.item.recordList.load();
 			return false;
 		}),
-	post: $('<div style="background: red;">Post</div>')
+	post: $('<div style="background: red;"><div class="title">Post</div></div>')
 		.click(function(){
 			Page.item.postList.load();
 			return false;
 		}),
-	article: $('<div style="background: purple;">Article</div>')
+	article: $('<div style="background: purple;"><div class="title">Article</div></div>')
 		.click(function(){
 			Page.item.articleList.load();
 			return false;
 		}),
-	user: $('<div style="background: gold;">User</div>')
+	user: $('<div style="background: goldenrod;"><div class="title">User</div></div>')
 		.click(function(){
 			Page.item.userList.load();
 			return false;
 		}),
-	contest: $('<div style="background: cyan;">Contest</div>')
+	contest: $('<div style="background: darkcyan;"><div class="title">Contest</div></div>')
 		.click(function(){
 			Page.item.contest.load();
 			return false;
 		}),
-	wikiSandbox: $('<div style="background: pink;">Wiki Sandbox</div>')
+	wikiSandbox: $('<div style="background: brown;"><div class="title">Wiki Sandbox</div></div>')
 		.click(function(){
 			Page.item.wikiSandbox.load();
 			return false;
 		}),
-	help: $('<div style="background: orangered;">Help</div>')
+	help: $('<div style="background: orangered;"><div class="title">Help</div></div>')
 		.click(function(){
 			Page.item.helpIndex.load();
 			return false;
@@ -44,12 +45,14 @@ MetroBlock.item={
 };
 
 MetroBlock.init=function(){
+	var toAppend=[];
+	
+	var index=0;
 	for(var blockName in MetroBlock.item){
 		var block=MetroBlock.item[blockName];
 		block.addClass('metroBlock').addClass('big');
 		
-		var index=$('#sidePanel .metroBlock').length;
-		if(index % 2 == 0){
+		if(index++ % 2 == 0){
 			block.css({
 				'float':'left',
 				'clear':'left'
@@ -61,6 +64,8 @@ MetroBlock.init=function(){
 			});
 		}
 		
-		$('#sidePanel').append(block);
+		toAppend.push(block);
 	}
+	
+	$('#sidePanel').prepend(toAppend);
 };

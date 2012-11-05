@@ -39,8 +39,10 @@
 	width: 100%;
 }
 #homepage{
-	display: inline-block;
-	margin: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 270px;
+	margin-right: 270px;
 }
 #backToHomepage{
 	position: absolute;
@@ -85,11 +87,15 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-#mainTopBarLeft{
-	float: left;
-}
 #mainTopBarRight{
 	float: right;
+}
+#mainTopBarRight img{
+	width: 40px;
+	margin-top: -10px;
+}
+#mainTopBarRight a.disabled img{
+	opacity: .5;
 }
 #pageTitle{
 	margin-left: 10px;
@@ -98,8 +104,13 @@
 	color: #404040;
 	font-family: sans-serif;
 }
+#copyPageURL{
+	color: gray;
+	font-size: small;
+}
 #main{
 	overflow: auto;
+	width: 100%;
 }
 #mainBottomBar{
 	position: absolute;
@@ -115,10 +126,14 @@
 
 .metroBlock{
 	display: inline-block;
-	font-size: x-large;
 	margin: 10px;
 	cursor: pointer;
-	
+}
+.metroBlock .title{
+	margin: 10px;
+	color: white;
+	font-weight: bold;
+	font-family: sans-serif;
 }
 .metroBlock.small{
 	width: 180px;

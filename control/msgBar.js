@@ -7,6 +7,7 @@ MsgBar.init=function(){
 
 MsgBar.show=function(type,dom){
 	var msgBar=$('<div class="msgBar"/>')
+		.disableSelection()
 		.addClass(type)
 		.append($('<a class="close" href="#">×</a>')
 			.click(function(){

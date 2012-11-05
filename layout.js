@@ -1,10 +1,12 @@
-﻿var Layout={};
+﻿"use strict";
+var Layout={};
 
 Layout.speed='slow';
 
 Layout.init=function(){
 	$('body')
 		.append($('<div id="pageTopBar"/>')
+			.disableSelection()
 			.append('<div id="pageTopBarLeft">Moo Online Judge</div>')
 			.append($('<div id="pageTopBarRight"/>')
 				.append('<div id="notLoggedIn" style="display: none"><a id="loginLink" href="#">登录</a></div>')
@@ -12,14 +14,21 @@ Layout.init=function(){
 			.append('<div class="clear"/>'))
 		.append($('<div id="pageBody"/>')
 			.append($('<div id="sidePanel" class="full"/>')
+				.disableSelection()
 				.append($('<a href="#" id="backToHomepage">&lt;&lt; Back &lt;&lt;</a>').hide())
 				.append('<div id="homepage"/>'))
 			.append($('<div id="mainArea" class="hidden">')
 				.append($('<div id="mainTopBar"/>')
-					.append($('<a id="pageTitle"/>'))
-					.append('<div id="mainTopBarRight"/>'))
-				.append('<div id="main"/>')
-				.append('<div id="mainBottomBar">&copy; 2012 Mr.Phone</div>'))
+					.disableSelection()
+					.append('<a id="pageTitle"/>')
+					.append('<a href="#" id="copyPageURL">复制本页地址</a>')
+					.append($('<div id="mainTopBarRight"/>')
+						.append('<a id="historyBackward" href="#"><img src="image/backward.png" alt="Go Backward" title="后退"/></a>')
+						.append('<a id="historyForward" href="#"><img src="image/forward.png" alt="Go Forward" title="前进"/></a>')
+						.append('<a id="refresh" href="#"><img src="image/refresh.png" alt="Refresh" title="刷新本页"/></a>')))
+				.append('<div id="main" style="display: none;"/>')
+				.append($('<div id="mainBottomBar">&copy; 2012 Mr.Phone</div>')
+					.disableSelection()))
 			.append('<div class="clear"/>'));
 	
 	//Auto Hide
@@ -36,8 +45,35 @@ Layout.init=function(){
 				},500);
 			}
 		});
+	
 	$('#backToHomepage').click(function(){
 		Page.backToHomepage();
+		return false;
+	});
+	
+	$('#copyPageURL').click(function(){
+		$('#pageTitle').hide().toggle("highlight",{color:'yellow'},'slow',function(){
+			MsgBar.show('tip','欲复制本页地址，仅需找到本页标题，右击，选择“复制链接地址”即可。');
+		});
+		return false;
+	});
+	
+	$('#refresh').click(function(){
+		if(Page.currentPage){
+			Page.refresh();
+		}
+		return false;
+	});
+	
+	$('#historyBackward').click(function(){
+		if(!$(this).hasClass('disabled'))
+			Page.history.backward();
+		return false;
+	});
+	
+	$('#historyForward').click(function(){
+		if(!$(this).hasClass('disabled'))
+			Page.history.forward();
 		return false;
 	});
 	
@@ -74,16 +110,12 @@ Layout.showMetroBlock=function(block,callback){
 	}
 	
 	function stepTwo(){
-		$('#main').hide();
-		
 		$('#sidePanel').switchClass('full','normal',Layout.speed);
 		$('#mainArea').switchClass('hidden','normal',Layout.speed);
 		$('#backToHomepage').fadeIn(Layout.speed,stepThree);
 	}
 	
 	function stepThree(){
-		$('#main').fadeIn(Layout.speed);
-		
 		Layout.mode='Normal';
 		if(callback && callback instanceof Function){
 			callback();

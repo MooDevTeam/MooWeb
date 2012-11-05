@@ -13,7 +13,8 @@ PopPage.prototype.load=function(params){
 	var wholepage=$('<div class="wholepage"/>');
 	var blackout=$('<div class="blackout"/>')
 		.click(function(){
-			PopPage.currentPage.unload();
+			if(PopPage.currentPage)
+				PopPage.currentPage.unload();
 		});
 	var popBox=$('<div id="popBox"/>')
 		.append($('<div id="windowBar">&nbsp;</div>')
@@ -38,13 +39,13 @@ PopPage.prototype.load=function(params){
 };
 
 PopPage.prototype.unload=function(){
+	PopPage.currentPage=null;
 	$(window).unbind('resize',PopPage.cssTrick);
 	$(document).unbind('keyup',PopPage.hotKey);
 	this.onunload();
 	$('.wholepage').fadeOut(function(){
 		$(this).remove();
 	});
-	PopPage.currentPage=null;
 };
 
 PopPage.cssTrick=function(){
@@ -53,6 +54,7 @@ PopPage.cssTrick=function(){
 
 PopPage.hotKey=function(evt){
 	if(evt.which==27){//Esc
-		PopPage.currentPage.unload();
+		if(PopPage.currentPage)
+			PopPage.currentPage.unload();
 	}
 };

@@ -36,17 +36,16 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 		this.loadOver=true;
 	}
 	
-	data.forEach(function(row){
+	data.forEach(function(dataRow){
 		self.itemNumber++;
 		var tableRow=$('<tr/>');
-		self.columns.forEach(function(column){
-			tableRow.append(ListTable.dataToTD(row[column.field],column.type));
-		});
+		self.bindRow(tableRow,dataRow);
+		tableRow
+			.click(self.onclick.bind(self,tableRow))
+			.contextmenu(self.oncontextmenu.bind(self,tableRow))
+			.data('ID',dataRow.ID);
+		self.rowMap[dataRow.ID]=tableRow;
 		$('tbody',self.table).append(tableRow.hide().fadeIn('slow'));
-		tableRow.click(self.onclick.bind(self,tableRow));
-		tableRow.contextmenu(self.oncontextmenu.bind(self,tableRow));
-		tableRow.data('ID',row.ID);
-		self.rowMap[row.ID]=tableRow;
 	});
 	
 	if(callback && callback instanceof Function){
@@ -54,7 +53,15 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 	}
 };
 
-ListTable.dataToTD=function(data,type){
+ListTable.prototype.bindRow=function(row,data){
+	var self=this;
+	row.html('');
+	this.columns.forEach(function(column){
+		row.append(self.dataToTD(data[column.field],column.type));
+	});
+}
+
+ListTable.prototype.dataToTD=function(data,type){
 	switch(type){
 		case 'html':
 			return $('<td/>').html(data);
@@ -71,7 +78,7 @@ ListTable.dataToTD=function(data,type){
 						})
 						.text(data.text));
 		case 'number':
-			return $('<td/>').text(typeof data=='number'?String(data):'');
+			return $('<td/>').text(data===null?'':String(data));
 	}
 };
 
