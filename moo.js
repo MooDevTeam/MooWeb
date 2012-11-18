@@ -55,21 +55,34 @@ Moo.whenSuccess=function(data,textStatus,jqXHR){
 		if(this.restore && this.restore instanceof Function){
 			this.restore();
 		}
-		throw e;
+		if(typeof e !='string')
+			throw e;
 	}
 }
 
 Moo.whenUnauthorized=function(jqXHR,textStatus,errorThrown){
 	if(!this.params.noMessage){
-		MsgBar.show('warning',$('<div/>')
-			.append('您尚未登录或登录凭据失效，是否需要')
-			.append($('<a href="#">重新登录</a>')
-				.click(function(){
-					PopPage.item.login.load();
-					$('.close',$(this).parent().parent()).click();
-					return false;
-				}))
-			.append('?'));
+		if(Moo.currentUser){
+			MsgBar.show('warning',$('<div/>')
+				.append('您的登录凭据失效，这可能是由于您的帐号被其他人非法登录所致。请问您是否需要')
+				.append($('<a href="#">重新登录</a>')
+					.click(function(){
+						PopPage.item.login.load();
+						$('.close',$(this).parent().parent()).click();
+						return false;
+					}))
+				.append('?'));
+		}else{
+			MsgBar.show('warning',$('<div/>')
+				.append('您尚未登录，无法执行此操作。请问您是否现在')
+				.append($('<a href="#">登录</a>')
+					.click(function(){
+						PopPage.item.login.load();
+						$('.close',$(this).parent().parent()).click();
+						return false;
+					}))
+				.append('?'));
+		}
 	}
 	if(this.params.unauthorized && this.params.unauthorized instanceof Function){
 		this.params.unauthorized();

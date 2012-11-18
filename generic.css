@@ -10,8 +10,10 @@ input{
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
-
-input[type='text'],input[type='password']{
+input.small{
+	font-size: small;
+}
+input[type='text'],input[type='password'],input[type='email']{
 	width: 200px;
 }
 input[type='submit'],input[type='button']{
@@ -24,6 +26,12 @@ input[type='submit'],input[type='button']{
 	padding-right: 20px;
 	font-family: sans-serif;
 	font-weight: bold;
+}
+input.small[type='submit'],input.small[type='button']{
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 input[type='submit']:disabled,input[type='button']:disabled{
 	background: lightgray;

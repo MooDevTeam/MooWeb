@@ -1,0 +1,6 @@
+.autoInput{
+	display: inline-block;
+}
+.autoInput > input{
+	width: 120px;
+}

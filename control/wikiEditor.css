@@ -1,0 +1,40 @@
+﻿.wikiEditor{
+	width: 80%;
+	background: whitesmoke;
+	padding-bottom: 5px;
+}
+.wikiEditorToolBar{
+	margin-left: 10px;
+	margin-right: 10px;
+	height: 30px;
+	overflow: hidden;
+}
+.wikiEditorToolBar  a{
+	display: inline-block;
+	font-weight: bold;
+	font-size: large;
+	padding: 5px;
+	height: 20px;
+	width: 15px;
+	text-align: center;
+	color: #202020;
+}
+.wikiEditorToolBar a:hover{
+	background: lightgray;
+}
+.wikiEditorTextAreaWrapper{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.wikiEditor textarea{
+	border: none;
+	padding: 0;
+	margin: 0;
+	min-width: 100%;
+	max-width: 100%;
+	box-shadow: 0 0 2px inset;
+}
+.wikiEditorPreview{
+	margin-left: 10px;
+	margin-right: 10px;
+}

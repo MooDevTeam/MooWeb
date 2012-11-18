@@ -12,8 +12,8 @@
 			$('#linkModifyTitle').show();
 		};
 		moo.PUT({
-			URI: '/Problems/'+params.id,
-			data: {problem:{Name:$('#txtTitle').val()}},
+			URI: '/Articles/'+params.id,
+			data: {article:{Name:$('#txtTitle').val()}},
 			success: function(){
 				$('#pageTitle').text($('#txtTitle').val());
 				moo.restore();
@@ -31,14 +31,14 @@
 			$('#content').show();
 		};
 		moo.POST({
-			URI: '/Problems/'+params.id+'/Revisions',
+			URI: '/Articles/'+params.id+'/Revisions',
 			data: {revision:{
 				Content: $('#txtContent').val(),
 				Reason: $('#txtReason').val()
 			}},
 			success: function(){
 				//Show the lastest revision, so it's not refresh
-				Page.item.problem.load({id:params.id});
+				Page.item.article.load({id:params.id});
 			}
 		});
 		return false;
@@ -47,12 +47,83 @@
 	function load(){
 		var moo=new Moo();
 		moo.GET({
-			URI: '/Problems/'+params.id,
+			URI: '/Articles/'+params.id,
 			data: params.revisionID===undefined?{}:{revisionID:params.revisionID},
 			success: function(data){
-				$('#pageTitle').text(data.ID+'.'+data.Name);
+				$('#pageTitle').text(data.Name);
 				$('#txtTitle').val(data.Name);
 				$('#txtContent').text(data.Content);
+				
+				var tags=$('<div/>');
+				data.Tag.forEach(function(tag){
+					var tagDom;
+					tag.onDelete=function(){
+						if(confirm('确实要删除标签 '+tag.Name+' 吗')){
+							new Moo().DELETE({
+								URI: '/Articles/'+params.id+'/Tags/'+tag.ID,
+								success: function(){
+									tagDom.fadeOut(function(){
+										$(this).remove();
+									});
+								}
+							});
+						}
+						return false;
+					};
+					tags.append(tagDom=Link.tag(tag));
+				});
+				tags
+					.append($('<a id="linkAddTag" title="添加标签" href="#"/>')
+						.click(function(){
+							$('#linkAddTag').hide();
+							$('#frmAddTag').show();
+							return false;
+						})
+						.append($('<img src="image/add.png" alt="Add"/>')
+							.css({
+								'width': '30px',
+								'vertical-align': 'bottom'
+							})))
+					.append($('<form id="frmAddTag"/>')
+						.hide()
+						.submit(function(){
+							$('#btnAddTag').attr('disabled',true);
+							var moo=new Moo();
+							moo.restore=function(){
+								$('#btnAddTag').attr('disabled',false);
+							};
+							moo.POST({
+								URI: '/Articles/'+params.id+'/Tags',
+								data: {tagID:Number($('#txtTagID').val())},
+								success: function(){
+									Page.refresh();
+								}
+							});
+							return false;
+						})
+						.append(new AutoInput({
+							id: 'txtTagID',
+							type: 'tag',
+							'class': 'small'
+						}).html())
+						.append('<input id="btnAddTag" type="submit" class="small" value="添加"/>')
+						.append($('<a id="linkCancelAddTag" href="#">取消</a>')
+							.click(function(){
+								$('#frmAddTag').hide();
+								$('#linkAddTag').show();
+								return false;
+							})));
+				
+				$('#main')
+					.prepend(new DetailTable({
+						columns: [
+									{title: '创建时间',type: 'date',data: data.CreateTime},
+									{title: '更新时间',type: 'date',data: data.Revision.CreateTime},
+									{title: '最后编辑者',type: 'html',data: Link.user(data.Revision.CreatedBy)},
+									{title: '标签',type: 'html',data: tags},
+									{title: '对应题目',type:'html',data: data.Problem.ID?Link.problem(data.Problem):'无'}
+								]
+					}).html());
 				
 				moo.POST({
 					URI: '/ParseWiki',
@@ -66,10 +137,10 @@
 		});
 	}
 	
-	Page.item.problem=new Page();
-	Page.item.problem.metroBlock=MetroBlock.item.problem;
-	Page.item.problem.name='problem';
-	Page.item.problem.onload=function(_params){
+	Page.item.article=new Page();
+	Page.item.article.metroBlock=MetroBlock.item.article;
+	Page.item.article.name='article';
+	Page.item.article.onload=function(_params){
 		params=_params;
 		
 		$('#mainTopBarLeft')
@@ -98,40 +169,9 @@
 		
 		$('#toolbar')
 			.append($('<li/>')
-				.append($('<a href="#">提交</a>')
-					.click(function(){
-						PopPage.item.submit.load({id:params.id});
-						return false;
-					})))
-			.append($('<li/>')
 				.append($('<a href="#">版本历史</a>')
 					.click(function(){
-						Page.item.problemHistory.load({id:params.id});
-						return false;
-					})))
-			.append($('<li/>')
-				.append($('<a href="#">选项</a>')
-					.click(function(){
-						Page.item.problemOption.load({id:params.id});
-						return false;
-					})))
-			.append('<li><hr/></li>')
-			.append($('<li/>')
-				.append($('<a href="#">相关记录</a>')
-					.click(function(){
-						Page.item.recordList.load({problemID:params.id});
-						return false;
-					})))
-			.append($('<li/>')
-				.append($('<a href="#">相关文章</a>')
-					.click(function(){
-						Page.item.articleList.load({problemID:params.id});
-						return false;
-					})))
-			.append($('<li/>')
-				.append($('<a href="#">相关帖子</a>')
-					.click(function(){
-						Page.item.postList.load({problemID:params.id});
+						Page.item.articleHistory.load({id:params.id});
 						return false;
 					})));
 		
@@ -165,7 +205,7 @@
 						}))));
 		load();
 	};
-	Page.item.problem.onunload=function(){
+	Page.item.article.onunload=function(){
 		$('#modifyTitle,#linkModifyTitle').remove();
 	};
 })();

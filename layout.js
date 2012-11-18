@@ -9,19 +9,21 @@ Layout.init=function(){
 			.disableSelection()
 			.append('<div id="pageTopBarLeft">Moo Online Judge</div>')
 			.append($('<div id="pageTopBarRight"/>')
-				.append('<div id="notLoggedIn" style="display: none"><a id="loginLink" href="#">登录</a></div>')
-				.append('<div id="loggedIn" style="display: none"><span id="loggedUserName"/> | <a id="logoutLink" href="#">登出</a></div>'))
+				.append('<div id="notLoggedIn" style="display: none;"><a id="loginLink" href="#">登录</a> | <a href="#" id="registerLink">注册</a></div>')
+				.append('<div id="loggedIn" style="display: none;"><span id="loggedUserName"/> | <a id="logoutLink" href="#">登出</a></div>'))
 			.append('<div class="clear"/>'))
 		.append($('<div id="pageBody"/>')
 			.append($('<div id="sidePanel" class="full"/>')
 				.disableSelection()
-				.append($('<a href="#" id="backToHomepage">&lt;&lt; Back &lt;&lt;</a>').hide())
-				.append('<div id="homepage"/>'))
+				.append($('<a href="#" title="返回首页" id="backToHomepage"><img src="image/home.png" alt="Back To Homepage"/></a>').hide())
+				.append('<div id="homepage"/>')
+				.append('<ul id="toolbar" style="display: none;"/>'))
 			.append($('<div id="mainArea" class="hidden">')
 				.append($('<div id="mainTopBar"/>')
 					.disableSelection()
-					.append('<a id="pageTitle"/>')
-					.append('<a href="#" id="copyPageURL">复制本页地址</a>')
+					.append($('<div id="mainTopBarLeft"/>')
+						.append('<a id="pageTitle"/>')
+						.append('<a href="#" id="copyPageURL">复制本页地址</a>'))
 					.append($('<div id="mainTopBarRight"/>')
 						.append('<a id="historyBackward" href="#"><img src="image/backward.png" alt="Go Backward" title="后退"/></a>')
 						.append('<a id="historyForward" href="#"><img src="image/forward.png" alt="Go Forward" title="前进"/></a>')
@@ -30,7 +32,7 @@ Layout.init=function(){
 				.append($('<div id="mainBottomBar">&copy; 2012 Mr.Phone</div>')
 					.disableSelection()))
 			.append('<div class="clear"/>'));
-	
+	/*
 	//Auto Hide
 	$('#sidePanel')
 		.hover(function(){
@@ -45,9 +47,43 @@ Layout.init=function(){
 				},500);
 			}
 		});
+	*/
+	$('#loginLink')
+		.click(function(){
+			PopPage.item.login.load();
+			return false;
+		});
+	
+	$('#registerLink')
+		.click(function(){
+			Page.item.register.load();
+			return false;
+		});
+	
+	$('#logoutLink')
+		.click(function(){
+			var moo=new Moo();
+			moo.restore=function(){
+				clearUserInfo();
+			};
+			moo.POST({
+				URI: '/Logout',
+				success: function(){
+					clearUserInfo();
+					MsgBar.show('info','已登出');
+				}
+			});
+			return false;
+		});
 	
 	$('#backToHomepage').click(function(){
 		Page.backToHomepage();
+		return false;
+	});
+	
+	$('#pageTitle').click(function(){
+		if(Page.currentPage)
+			Page.refresh();
 		return false;
 	});
 	
@@ -110,6 +146,7 @@ Layout.showMetroBlock=function(block,callback){
 	}
 	
 	function stepTwo(){
+		Homepage.onunload();
 		$('#sidePanel').switchClass('full','normal',Layout.speed);
 		$('#mainArea').switchClass('hidden','normal',Layout.speed);
 		$('#backToHomepage').fadeIn(Layout.speed,stepThree);
@@ -166,6 +203,7 @@ Layout.backToHomepage=function(callback){
 	}
 	
 	function stepTwo(){
+		Homepage.onload();
 		$('#homepage').hide().fadeIn(Layout.speed);
 		$('#sidePanel .metroBlock:hidden')
 			.slideDown(Layout.speed);

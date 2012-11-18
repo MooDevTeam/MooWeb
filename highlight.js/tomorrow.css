@@ -3,7 +3,6 @@
 pre .codePages { 
   color: #777; 
   position: relative; 
-  float: left; 
   width: 30px; 
   height: 1px; /* (for ie) */
 } 

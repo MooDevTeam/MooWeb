@@ -8,26 +8,11 @@ function assert(condition){
 
 $(function(){
 	Layout.init();
-	
-	$('#loginLink')
-		.click(function(){
-			PopPage.item.login.load();
-			return false;
-		});
-	
-	$('#logoutLink')
-		.click(function(){
-			clearUserInfo();
-			MsgBar.show('info','已登出');
-			return false;
-		});
-	
-	$('#homepage')
-		.append('The Moo Online Judge long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long');
-	
 	MetroBlock.init();
 	MsgBar.init();
 	
+	//TODO Debugging
+	if(!Config.debug)
 	$(document).bind('keydown',function(e) {
 		if(e.which === 116 || e.which === 82 && e.ctrlKey) {//F5 || Ctrl-R
 			if(Page.currentPage){
@@ -47,6 +32,7 @@ $(function(){
 			if(queryString.page){
 				Page.item[queryString.page].load(queryString);
 			}else{
+				Homepage.onload();
 				$('#homepage').hide().fadeIn('slow');
 			}
 		}else{
@@ -59,6 +45,7 @@ $(function(){
 						return false;
 					}))
 				.append('吗？'));
+			Homepage.onload();
 			$('#homepage').hide().fadeIn('slow');
 		}
 	});
@@ -113,7 +100,13 @@ function URLEncode(x){
 	}else if(typeof x=='object'){
 		var result=[];
 		for(var name in x){
-			result.push(String(name) + '=' + String(x[name]));
+			var value=x[name];
+			if(typeof value=='number' || typeof value=='string'){
+				value=String(value);
+			}else{
+				value=JSON.stringify(value)
+			}
+			result.push(URLEncode(String(name)) + '=' + URLEncode(value));
 		}
 		return result.join('&');
 	}else
@@ -127,8 +120,13 @@ function parseURL(arg){
 			var index=keyValuePair.indexOf('=');
 			if(index!=-1){
 				var key=keyValuePair.substring(0,index);
-				var value=keyValuePair.substring(index+1);
-				result[URLDecode(key)]=URLDecode(value);
+				var value=URLDecode(keyValuePair.substring(index+1));
+				if(!isNaN(Number(value))){
+					value=Number(value);
+				}else if(value[0]=='{' && value[value.length-1]=='}' || value[0]=='[' && value[value.length-1]==']'){
+					value=$.parseJSON(value,true);
+				}
+				result[URLDecode(key)]=value;
 			}
 		}
 	);

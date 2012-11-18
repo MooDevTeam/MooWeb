@@ -4,7 +4,7 @@
 		<title>Moo Online Judge</title>
 		
 		<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="highlight.js/tomorrow.css" />
+		<link rel="stylesheet" type="text/css" href="highlight.js/vs.css" />
 		
 		<link rel="stylesheet" type="text/css" href="generic.css"/>
 		<link rel="stylesheet" type="text/css" href="layout.css"/>
@@ -14,17 +14,25 @@
 		<link rel="stylesheet" type="text/css" href="control/detailTable.css"/>
 		<link rel="stylesheet" type="text/css" href="control/popBox.css"/>
 		<link rel="stylesheet" type="text/css" href="control/msgBar.css"/>
+		<link rel="stylesheet" type="text/css" href="control/wikiEditor.css"/>
+		<link rel="stylesheet" type="text/css" href="control/link.css"/>
+		<link rel="stylesheet" type="text/css" href="control/autoInput.css"/>
 		<!-- Controls End -->
 		
+		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.min.js"></script>
 		<script src="jQueryPlugin/parseJSON.js"></script>
+		<!-- jQuery End -->
+		
+		<script src="diff_match_patch.js"></script>
 		
 		<!-- Highlight.js -->
 		<script src="highlight.js/highlight.js" type="text/javascript"></script>
 		<script src="highlight.js/cpp.js" type="text/javascript"></script>
 		<script src="highlight.js/java.js" type="text/javascript"></script>
 		<script src="highlight.js/delphi.js" type="text/javascript"></script>
+		<script src="highlight.js/diff.js" type="text/javascript"></script>
 		<!-- Highlight.js End -->
 		
 		<script src="config.js"></script>
@@ -35,6 +43,8 @@
 		<script src="control/popBox.js"></script>
 		<script src="control/msgBar.js"></script>
 		<script src="control/link.js"></script>
+		<script src="control/wikiEditor.js"></script>
+		<script src="control/autoInput.js"></script>
 		<!-- Controls End -->
 		
 		<script src="page.js"></script>
@@ -46,12 +56,27 @@
 		<!-- Appearence End -->
 		
 		<!-- Pages -->
+		<script src="page/homepage.js"></script>
 		<script src="page/login.js"></script>
+		<script src="page/register.js"></script>
 		<script src="page/wikiSandbox.js"></script>
+		
 		<script src="page/problem.js"></script>
+		<script src="page/submit.js"></script>
+		<script src="page/problemCreate.js"></script>
 		<script src="page/problemList.js"></script>
+		<script src="page/problemOption.js"></script>
+		<script src="page/problemHistory.js"></script>
+		<script src="page/problemRevisionCompare.js"></script>
+		
 		<script src="page/record.js"></script>
 		<script src="page/recordList.js"></script>
+		
+		<script src="page/article.js"></script>
+		<script src="page/articleCreate.js"></script>
+		<script src="page/articleList.js"></script>
+		<script src="page/articleHistory.js"></script>
+		<script src="page/articleRevisionCompare.js"></script>
 		<!-- Pages End -->
 		
 		<script src="global.js"></script>

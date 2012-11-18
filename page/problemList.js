@@ -49,6 +49,14 @@
 	Page.item.problemList.onload=function(params){
 		$('#pageTitle').text('题目列表');
 		
+		$('#toolbar')
+			.append($('<li/>')
+				.append($('<a href="#">创建新题目</a>')
+					.click(function(){
+						Page.item.problemCreate.load();
+						return false;
+					})));
+		
 		listTable=new ListTable();
 		listTable.columns=
 			[

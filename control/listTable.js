@@ -1,4 +1,4 @@
-/**
+﻿/**
 	columns: [{title:'Title',type:'html|text|number',field:'FieldName'}],
 	dataPicker: function(start,callback)
 		callback: function([{fieldName:xxxx}],bool haveMore)
@@ -34,6 +34,9 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 	}else{
 		$('.showMore',this.table).remove();
 		this.loadOver=true;
+		if($('tbody > tr',this.table).length+data.length==0){
+			$('.notAny',this.table).show();
+		}
 	}
 	
 	data.forEach(function(dataRow){
@@ -95,6 +98,11 @@ ListTable.prototype.appendTo=function(dom){
 			.append(titleRow))
 		.append($('<tbody/>'))
 		.append($('<tfoot/>')
+			.append($('<tr class="notAny"/>')
+				.hide()
+				.append($('<td/>')
+					.attr('colspan',this.columns.length)
+					.text('这里没东西，别看了，洗洗睡吧。')))
 			.append($('<tr class="showMore"/>')
 				.append($('<td/>')
 					.attr('colspan',this.columns.length)

@@ -52,21 +52,27 @@ Page.backToHomepage=function(){
 
 Page.prototype.load=function(params,noHistory){
 	if(Page.currentPage){
-		Page.currentPage.unload(this.doLoad.bind(this,params,noHistory));
+		Page.currentPage.unload(this.doLoad.bind(this,params,Page.currentPage,noHistory));
+		Page.currentPage=null;
 	}else{
-		this.doLoad(params,noHistory);
+		this.doLoad(params,null,noHistory);
 	}
 };
 
-Page.prototype.doLoad=function(params,noHistory){
-	if(!Page.currentPage){
-		Page.currentPage=this;
-		Layout.showMetroBlock(this.metroBlock);
-	}else if(Page.currentPage.metroBlock!=this.metroBlock){
-		Page.currentPage=this;
+Page.prototype.doLoad=function(params,previousPage,noHistory){
+	Page.currentPage=this;
+	if(!previousPage){
+		Layout.showMetroBlock(this.metroBlock,function(){
+			$('#main').fadeIn();
+			$('#toolbar').fadeIn();
+		});
+	}else if(previousPage.metroBlock!=this.metroBlock){
+		$('#main').fadeIn();
+		$('#toolbar').fadeIn();
 		Layout.switchMetroBlock(this.metroBlock);
 	}else{
-		Page.currentPage=this;
+		$('#main').fadeIn();
+		$('#toolbar').fadeIn();
 	}
 	
 	params=params || {};
@@ -99,14 +105,15 @@ Page.prototype.doLoad=function(params,noHistory){
 	$('#mainTopBar,#mainBottomBar')
 		.css('border-color',this.metroBlock.css('background-color'));
 	this.onload(params);
-	$('#main').fadeIn();
 }
 
 Page.prototype.unload=function(callback){
 	this.onunload();
 	
+	$('#toolbar').fadeOut();
 	$('#main').fadeOut('normal',function(){
 		$('#main').html('');
+		$('#toolbar').html('');
 		$('#pageTitle').text('');
 		if(callback instanceof Function)
 			callback();

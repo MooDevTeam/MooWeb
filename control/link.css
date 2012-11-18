@@ -1,0 +1,20 @@
+.tag{
+	border: lightgray solid 1px;
+	display: inline-block;
+	padding: 5px;
+	border-radius: 5px;
+	background: whitesmoke;
+	color: black;
+	margin: 5px;
+	position: relative;
+}
+.tag > .tagDelete > img{
+	width: 20px;
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	opacity: .7;
+}
+.tag > .tagDelete:hover > img{
+	opacity: 1;
+}

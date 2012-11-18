@@ -46,26 +46,39 @@
 }
 #backToHomepage{
 	position: absolute;
-	bottom: 10px;
-	display: block;
-	font-size: x-large;
-	font-weight: bold;
-	font-family: sans-serif;
-	color: #606060;
+	bottom: 0;
 	width: 100%;
 	text-align: center;
-	transition: color .5s;
-	-webkit-transition: color .5s;
-	-moz-transition: color .5s;
-	-o-transition: color .5s;
-	transition: margin .5s;
-	-webkit-transition: margin .5s;
-	-moz-transition: margin .5s;
-	-o-transition: margin .5s;
+	
+	transition: bottom .5s;
+	-webkit-transition: bottom .5s;
+	-moz-transition: bottom .5s;
+	-o-transition: bottom .5s;
 }
 #backToHomepage:hover{
+	bottom: 10px;
+}
+#toolbar{
+	padding: 0;
+	list-style: none;
+	margin-top: 120px;
+}
+#toolbar > li > a{
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-size: large;
+	font-weight: bold;
+	font-family: sans-serif;
 	color: #202020;
-	margin-left: -10px;
+}
+#toolbar > li > a:hover{
+	background: lightgray;
+}
+#toolbar > li > hr{
+	width: 90%;
 }
 #mainArea{
 	position: relative;
@@ -87,6 +100,10 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+#mainTopBarLeft{
+	margin-left: 10px;
+	display: inline-block;
+}
 #mainTopBarRight{
 	float: right;
 }
@@ -98,7 +115,6 @@
 	opacity: .5;
 }
 #pageTitle{
-	margin-left: 10px;
 	font-size: large;
 	font-weight: bold;
 	color: #404040;

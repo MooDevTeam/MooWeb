@@ -473,6 +473,7 @@ var hljs=new function() {
 	if(block.classList.contains('highlighted'))
 		return;
 	block.classList.add('highlighted');
+	
     var text = blockText(block, useBR);
     var language = blockLanguage(block);
     if (language == 'no-highlight')

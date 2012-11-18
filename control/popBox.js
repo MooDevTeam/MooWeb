@@ -1,4 +1,9 @@
-﻿function PopPage(){
+﻿"use strict";
+/**
+	onload:function(params)
+	onunload:function()
+*/
+function PopPage(){
 }
 
 PopPage.item={};
@@ -6,9 +11,8 @@ PopPage.item={};
 PopPage.currentPage=null;
 
 PopPage.prototype.load=function(params){
-	if(PopPage.currentPage){
-		alert('Multiple PopBox');
-	}
+	assert(!PopPage.currentPage);
+	
 	PopPage.currentPage=this;
 	var wholepage=$('<div class="wholepage"/>');
 	var blackout=$('<div class="blackout"/>')
@@ -19,7 +23,8 @@ PopPage.prototype.load=function(params){
 	var popBox=$('<div id="popBox"/>')
 		.append($('<div id="windowBar">&nbsp;</div>')
 			.append('<span id="windowTitle"/>'))
-		.append('<div id="windowBody"/>');
+		.append($('<div id="windowBody"/>')
+			.append('<div id="windowMain">'));
 	wholepage.append(blackout).append(popBox);
 	
 	$('body')
@@ -29,13 +34,13 @@ PopPage.prototype.load=function(params){
 		addClasses: false,
 		containment: wholepage,
 		cursor: 'move',
-		handle: windowBar
+		handle: $('#windowBar')
 	});
 	$(window).bind('resize',PopPage.cssTrick);
 	$(document).bind('keyup',PopPage.hotKey);
 	PopPage.cssTrick();
 	
-	this.onload(params);
+	this.onload(params?params:{});
 };
 
 PopPage.prototype.unload=function(){

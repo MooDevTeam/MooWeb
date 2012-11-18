@@ -5,28 +5,26 @@
 	Page.item.wikiSandbox.name='wikiSandbox';
 	Page.item.wikiSandbox.onload=function(params){
 		$('#pageTitle').text('Wiki演练场');
+		
 		$('#main')
-			.append($('<div id="result"/>'))
-			.append($('<form/>')
-				.submit(function(){
-					$('#btnSubmit').attr('disabled',true);
-					var moo=new Moo();
-					moo.restore=function(){
-						$('#btnSubmit').attr('disabled',false);
-					};
-					moo.POST({
-						URI: '/ParseWiki',
-						data: {wiki:$('#txtInput').val()},
-						success: function(data){
-							$('#result').html(data);
-							$('pre code').each(function(i,e){hljs.highlightBlock(e);});
-							$('#btnSubmit').attr('disabled',false);
-						}
-					});
-					return false;
+			.append($('<div/>')
+				.css({
+					'display':'table',
+					'width':'100%',
+					'height':'100%'
 				})
-				.append('<div><textarea id="txtInput" cols="100" rows="30"/></div>')
-				.append('<div><input id="btnSubmit" type="submit" value="显示效果"/></div>'));
+				.append($('<div/>')
+					.css({
+						'text-align':'center',
+						'vertical-align':'middle',
+						'display':'table-cell'
+					})
+					.append(new WikiEditor({
+						placeholder:'在此输入内容，下方即显示最终效果。'
+					}).html().css({
+						'display':'inline-block',
+						'text-align':'left'
+					}))));
 	};
 	Page.item.wikiSandbox.onunload=function(){
 	};

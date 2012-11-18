@@ -1,11 +1,11 @@
-function DetailTable(){
-}
-
-DetailTable.prototype.getHTML=function(){
+/**
+	columns:[type:xxx,title:xxx,data:xxx]
+*/
+function DetailTable(params){
 	var titleRow=$('<tr/>');
 	var dataRow=$('<tr/>');
 	
-	this.columns.forEach(function(col){
+	params.columns.forEach(function(col){
 		titleRow.append($('<th/>').text(col.title));
 		switch(col.type){
 			case 'text':
@@ -23,9 +23,13 @@ DetailTable.prototype.getHTML=function(){
 		}
 	});
 	
-	return $('<table class="detailTable"/>')
+	this.table=$('<table class="detailTable"/>')
 		.append($('<thead/>')
 			.append(titleRow))
 		.append($('<tbody/>')
 			.append(dataRow));
+}
+
+DetailTable.prototype.html=function(){
+	return this.table;
 };

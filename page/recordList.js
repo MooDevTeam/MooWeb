@@ -16,19 +16,27 @@
 			Problem: Link.problem(line.Problem),
 			User: Link.user(line.User),
 			Score: {
-				text: line.Score?line.Score>=0?line.Score:'评测中':'尚未评测',
+				text: line.Score!==null?line.Score>=0?line.Score:'评测中':'尚未评测',
 				href: {page:'record',id:line.ID}
 			}
 		};
 	}
 	
-	function dataPicker(start,callback){
+	function dataPicker(params,start,callback){
 		var moo=new Moo();
 		moo.restore=callback.bind(null,[],false);
 		
+		var query={skip:start,top:Config.itemNumberEachTime};
+		if(params.userID)
+			query.userID=params.userID;
+		if(params.contestID)
+			query.contestID=params.contestID;
+		if(params.problemID)
+			query.problemID=params.problemID;
+		
 		moo.GET({
 			URI: '/Records',
-			data: {skip:start,top:Config.itemNumberEachTime},
+			data: query,
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
@@ -80,7 +88,7 @@
 				{title:'语言',type:'text',field:'Language'},
 				{title:'分数',type:'link',field:'Score'}
 			];
-		listTable.dataPicker=dataPicker;
+		listTable.dataPicker=dataPicker.bind(null,params);
 		listTable.singleMenu=
 			[
 				{title:'查看',action:function(id){Page.item.record.load({'id':id})}},

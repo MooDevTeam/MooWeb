@@ -23,6 +23,7 @@
 						'pascal':'Pascal',
 						'plaintext':' '
 					}[data.Language] || data.Language});
+				detail.columns.push({title:'评测状态',type:'text',data:data.Score===null?'尚未评测':data.Score<0?'正在评测':'已评测'});
 				if(data.Score!==null)
 					detail.columns.push({title:'分数',type:'number',data:data.Score});
 				detail.columns.push({title:'源码可见性',type:'text',data:data.PublicCode?'公开':'私有'});

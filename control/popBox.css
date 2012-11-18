@@ -24,6 +24,7 @@
 	z-index: 1;
 	border-radius: 10px;
 	box-shadow: 0 0 30px black;
+	overflow: auto;
 }
 #windowBar{
 	background: #202020;
@@ -39,4 +40,9 @@
 #windowBody{
 	width: 100%;
 	display: table;
+}
+#windowMain{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
 }
