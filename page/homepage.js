@@ -102,7 +102,7 @@ var Homepage={};
 						'box-shadow':'2px 2px 10px gray',
 						'display':'block',
 						'margin':'auto',
-						'width':'95%',
+						'width':'95%'
 					}))
 					.keypress(function(e){
 						if(e.ctrlKey && (e.keyCode==10 || e.keyCode==13)){

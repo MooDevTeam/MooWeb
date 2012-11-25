@@ -1,7 +1,7 @@
 ﻿"use strict";
 (function(){
 	Page.item.wikiSandbox=new Page();
-	Page.item.wikiSandbox.metroBlock=MetroBlock.item.wikiSandbox;
+	Page.item.wikiSandbox.metroBlock=MetroBlock.item.help;
 	Page.item.wikiSandbox.name='wikiSandbox';
 	Page.item.wikiSandbox.onload=function(params){
 		$('#pageTitle').text('Wiki演练场');

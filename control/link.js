@@ -28,6 +28,15 @@ Link.article=function(info){
 		});
 }
 
+Link.contest=function(info){
+	return $('<a href="?page=contest&id='+info.ID+'"/>')
+		.text(info.Name)
+		.click(function(){
+			Page.item.contest.load({id:info.ID});
+			return false;
+		});
+}
+
 Link.tag=function(info){
 	return $('<a class="tag" href="?page=articleList&tagID='+info.ID+'"/>')
 		.text(info.Name)

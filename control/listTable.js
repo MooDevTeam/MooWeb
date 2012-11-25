@@ -5,12 +5,111 @@
 	singleMenu: [{title:xxx,action:function(data)}]
 	multipleMenu: [{title:xxx,action:function(datas)}]
 */
-function ListTable(){
+function ListTable(params){
+	var self=this;
 	this.itemNumber=0;
 	this.loadOver=false;
 	this.loading=false;
 	this.rowMap={};
+	
+	this.dataPicker=params.dataPicker;
+	this.columns=params.columns;
+	
+	//Column Titles
+	var titleRow=$('<tr/>');
+	params.columns.forEach(function(desc){
+		titleRow.append($('<th/>').text(desc.title));
+	});
+	
+	this.table=$('<table class="listTable"/>')
+		.append($('<thead/>')
+			.append(titleRow))
+		.append($('<tbody/>'))
+		.append($('<tfoot/>')
+			.append($('<tr class="notAny"/>')
+				.hide()
+				.append($('<td/>')
+					.attr('colspan',params.columns.length)
+					.text('这里没东西，别看了，洗洗睡吧。')))
+			.append($('<tr class="showMore"/>')
+				.append($('<td/>')
+					.attr('colspan',params.columns.length)
+					.append($('<a href="#">Show More...</a>')
+						.click(function(){
+							self.showMore();
+							return false;
+						}))
+					.append($('<progress/>')
+						.hide()))));
+	//Menu
+	if(params.singleMenu)
+		this.singleMenu=this.buildMenu(params.singleMenu);
+	if(params.multipleMenu)
+		this.multipleMenu=this.buildMenu(params.multipleMenu);
+	if(params.doubleMenu)
+		this.doubleMenu=this.buildMenu(params.doubleMenu);
+	
+	this.wrapper=$('<div class="listTableWrapper"/>')
+		.disableSelection()
+		.scroll(function(){
+			if(!self.loadOver && !self.loading){
+				var leftHeight=self.table.outerHeight(true)-$(this).height()-$(this).scrollTop();
+				if(leftHeight<0.2*$(this).height())
+					self.showMore();
+			}
+			$('thead',self.table).css('top',$(this).scrollTop());
+		})
+		.append(this.singleMenu)
+		.append(this.multipleMenu)
+		.append(this.doubleMenu)
+		.append(this.table);
 }
+
+ListTable.prototype.buildMenu=function(menus){
+	var self=this;
+	var htmlMenu=$('<ul class="menu"/>').hide();
+	
+	function show(e){
+		htmlMenu.show();
+		htmlMenu.offset({
+			left: e.pageX+Math.min(0,$(window).width()-e.clientX-htmlMenu.outerWidth(true)),
+			top: e.pageY+Math.min(0,$(window).height()-e.clientY-htmlMenu.outerHeight(true))
+		});
+		htmlMenu.hide().fadeIn();
+		
+		$(document).bind('click',hide);
+	}
+	
+	htmlMenu.data('show',show);
+	
+	function hide(){
+		$(document).unbind('click',hide);
+		htmlMenu.fadeOut();
+		return false;
+	}
+	
+	menus.forEach(function(menu){
+		htmlMenu
+			.append($('<li/>')
+				.append($('<a href="#"/>')
+					.text(menu.title)
+					.click(function(){
+						$(document).unbind('click',hide);
+						htmlMenu.fadeOut('normal',function(){
+							var selected=$('tbody > tr.selected',self.table);
+							var datas=selected.map(function(){return $(this).data('ID');}).get();
+							menu.action(datas);
+						});
+						return false;
+					})));
+	});
+	
+	return htmlMenu;
+};
+
+ListTable.prototype.html=function(){
+	return this.wrapper;
+};
 
 ListTable.prototype.showMore=function(callback){
 	$('.showMore a',this.table).hide();
@@ -46,7 +145,12 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 		tableRow
 			.click(self.onclick.bind(self,tableRow))
 			.contextmenu(self.oncontextmenu.bind(self,tableRow))
-			.data('ID',dataRow.ID);
+			.dblclick(function(){
+				if($(this).data('dblclick') instanceof Function)
+					$(this).data('dblclick')();
+			})
+			.data('ID',dataRow.ID)
+			.data('dblclick',dataRow.dblclick);
 		self.rowMap[dataRow.ID]=tableRow;
 		$('tbody',self.table).append(tableRow.hide().fadeIn('slow'));
 	});
@@ -83,116 +187,6 @@ ListTable.prototype.dataToTD=function(data,type){
 		case 'number':
 			return $('<td/>').text(data===null?'':String(data));
 	}
-};
-
-ListTable.prototype.appendTo=function(dom){
-	var self=this;
-	//Column Titles
-	var titleRow=$('<tr/>');
-	this.columns.forEach(function(desc){
-		titleRow.append($('<th/>').text(desc.title));
-	});
-	
-	this.table=$('<table class="listTable"/>')
-		.append($('<thead/>')
-			.append(titleRow))
-		.append($('<tbody/>'))
-		.append($('<tfoot/>')
-			.append($('<tr class="notAny"/>')
-				.hide()
-				.append($('<td/>')
-					.attr('colspan',this.columns.length)
-					.text('这里没东西，别看了，洗洗睡吧。')))
-			.append($('<tr class="showMore"/>')
-				.append($('<td/>')
-					.attr('colspan',this.columns.length)
-					.append($('<a href="#">Show More...</a>')
-						.click(function(){
-							self.showMore();
-							return false;
-						}))
-					.append($('<progress/>')
-						.hide()))));
-	//Menu
-	this.singleContextMenu=$('<ul class="menu"/>');
-	this.singleMenu.forEach(function(menu){
-		$('<li/>')
-			.append($('<a href="#"/>')
-				.text(menu.title)
-				.click(function(){
-					$(document).unbind('click',self.singleContextMenuHider);
-					self.singleContextMenu.fadeOut('normal',function(){
-						menu.action($('tbody > tr.selected',self.table).data('ID'));
-					});
-					return false;
-				}))
-			.appendTo(self.singleContextMenu);
-	});
-	
-	this.multipleContextMenu=$('<ul class="menu"/>');
-	this.multipleMenu.forEach(function(menu){
-		$('<li/>')
-			.append($('<a href="#"/>')
-				.text(menu.title)
-				.click(function(){
-					$(document).unbind('click',self.multipleContextMenuHider);
-					self.multipleContextMenu.fadeOut('normal',function(){
-						var selected=$('tbody > tr.selected',self.table);
-						var datas=[];
-						for(var i=0;i<selected.length;i++){
-							datas.push($(selected[i]).data('ID'));
-						}
-						menu.action(datas);
-					});
-					return false;
-				}))
-			.appendTo(self.multipleContextMenu);
-	});
-	
-	dom.append($('<div class="listTableWrapper"/>')
-		.scroll(function(){
-			if(!self.loadOver && !self.loading){
-				var leftHeight=self.table.outerHeight(true)-$(this).height()-$(this).scrollTop();
-				if(leftHeight<0.2*$(this).height())
-					self.showMore();
-			}
-			$('thead',self.table).css('top',$(this).scrollTop());
-		})
-		.append(this.singleContextMenu.hide())
-		.append(this.multipleContextMenu.hide())
-		.append(this.table));
-	
-	this.table.disableSelection();
-};
-
-ListTable.prototype.showSingleContextMenu=function(offset){
-	this.singleContextMenu.show();
-	this.singleContextMenu.offset(offset);
-	this.singleContextMenu.hide().fadeIn();
-	
-	this.singleContextMenuHider=this.hideSingleContextMenu.bind(this);
-	$(document).bind('click',this.singleContextMenuHider);
-};
-
-ListTable.prototype.hideSingleContextMenu=function(){
-	$(document).unbind('click',this.singleContextMenuHider);
-	this.singleContextMenu.fadeOut();
-	return false;
-};
-
-ListTable.prototype.showMultipleContextMenu=function(offset){
-	this.multipleContextMenu.show();
-	this.multipleContextMenu.offset(offset);
-	this.multipleContextMenu.hide().fadeIn();
-	
-	this.multipleContextMenuHider=this.hideMultipleContextMenu.bind(this);
-	$(document).bind('click',this.multipleContextMenuHider);
-};
-
-ListTable.prototype.hideMultipleContextMenu=function(){
-	$(document).unbind('click',this.multipleContextMenuHider);
-	this.multipleContextMenu.fadeOut();
-	return false;
 };
 
 ListTable.prototype.onclick=function(row,e){
@@ -246,16 +240,15 @@ ListTable.prototype.oncontextmenu=function(row,e){
 		row.addClass('selected');
 	}
 	
-	if($('tbody > tr.selected').length>1){
-		this.showMultipleContextMenu({
-			left: e.pageX+Math.min(0,$(window).width()-e.clientX-this.multipleContextMenu.outerWidth(true)),
-			top: e.pageY+Math.min(0,$(window).height()-e.clientY-this.multipleContextMenu.outerHeight(true))
-		});
-	}else{
-		this.showSingleContextMenu({
-			left: e.pageX+Math.min(0,$(window).width()-e.clientX-this.singleContextMenu.outerWidth(true)),
-			top: e.pageY+Math.min(0,$(window).height()-e.clientY-this.singleContextMenu.outerHeight(true))
-		});
-	}
+	if($('tbody > tr.selected').length==1){
+		if(this.singleMenu)
+			this.singleMenu.data('show')(e);
+	}else if($('tbody > tr.selected').length==2){
+		if(this.doubleMenu)
+			this.doubleMenu.data('show')(e);
+		else if(this.multipleMenu)
+			this.multipleMenu.data('show')(e);
+	}else if(this.multipleMenu)
+		this.multipleMenu.data('show')(e);
 	return false;
 }

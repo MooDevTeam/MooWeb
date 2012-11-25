@@ -7,6 +7,20 @@ function assert(condition){
 }
 
 $(function(){
+	if(Navigator.tooOld()){
+		$('body')
+			.append('<h3>请原谅我们无法为您加载Moo</h3>')
+			.append('Moo使用HTML 5，希望为您带来最佳的浏览体验。其间使用到了一些较为先进的浏览器特性。<br/>')
+			.append('但由于您的浏览器较为落后，部分特性得不到良好的支持，如继续加载，可能会：<br/>')
+			.append($('<ol/>')
+				.append('<li>Moo的页面显示出现问题。例如文本、按钮、图片等出现错位。</li>')
+				.append('<li>Moo的最基本功能无法正常使用。例如无法登陆、无法打开特定页面抑或页面切换出现问题。</li>'))
+			.append('<h3>请您考虑更换您的浏览器</h3>')
+			.append('换用最新版<a href="http://www.google.com/chrome">Google Chrome</a>您将会得到非凡的浏览体验。由于Moo的开发以Google Chrome为参照，它对于Google Chrome完全兼容。<br/>')
+			.append('您也可以尝试最新版本的<a href="http://www.firefox.com/">Mozilla Firefox</a>、<a href="http://www.opera.com/">Opera</a>、<a href="http://www.apple.com/safari/">Safari</a>、<a href="http://windows.microsoft.com/zh-CN/internet-explorer/download-ie">Internet Explorer</a>等一系列优秀浏览器。')
+		return;
+	}
+	
 	Layout.init();
 	MetroBlock.init();
 	MsgBar.init();
@@ -23,6 +37,13 @@ $(function(){
 		}
 	});
 	
+	$('#sidePanel')
+		.append($('<a href="#">Debug</a>')
+			.click(function(){
+				Page.item.testCaseCreate.load({id:1});
+				return false;
+			}));
+	
 	refreshUserInfo(function(){
 		if(Moo.currentUser){ //Success
 			var queryString={};
@@ -34,6 +55,14 @@ $(function(){
 			}else{
 				Homepage.onload();
 				$('#homepage').hide().fadeIn('slow');
+				
+				if(Math.random()<0.5){
+					$.get('tip.txt',function(data){
+						var tips=data.split(/\r\n?|\n/g);
+						var tip=tips[Math.floor(Math.random() * tips.length + 1)-1];
+						MsgBar.show('tip','<b>你知道吗？</b>'+tip);
+					});
+				}
 			}
 		}else{
 			MsgBar.show('warning',$('<div/>')
@@ -76,7 +105,7 @@ function refreshUserInfo(callback){
 						}
 					}
 				});
-			},
+			}
 		});
 	}else{
 		clearUserInfo();

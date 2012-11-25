@@ -1,0 +1,56 @@
+﻿.fileList{
+	float: left;
+	width: 50%;
+}
+.fileList .title{
+	text-align: center;
+	font-size: large;
+}
+.fileList ul{
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	min-height: 30px;
+}
+.fileList li{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	cursor: move;
+	margin: 10px;
+	background: whitesmoke;
+}
+.fileList li:hover{
+	background: lightgray;
+}
+
+.fileList li .fileImg{
+	float: left;
+	width: 55px;
+	height: 55px;
+}
+#lstInput .fileImg{
+	background: url("../image/file1.png");
+	background-size: 55px;
+}
+#lstAnswer .fileImg{
+	background: url("../image/file2.png");
+	background-size: 55px;
+}
+.fileList li .info{
+	margin-left: 60px;
+}
+.fileList li .delete{
+	float: right;
+	color: #404040;
+	visibility: hidden;
+}
+.fileList li:hover .delete{
+	visibility: visible;
+}
+.fileList li progress{
+	width: 100%;
+}

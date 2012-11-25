@@ -18,6 +18,7 @@
 				PostLocked: $('#chkPostLocked').attr('checked')=='checked',
 				RecordLocked: $('#chkRecordLocked').attr('checked')=='checked',
 				EnableTesting: $('#chkEnableTesting').attr('checked')=='checked',
+				JudgeInfoHidden: $('#chkJudgeInfoHidden').attr('checked')=='checked',
 				Type: $('#selType').val()
 			}},
 			success: function(){
@@ -41,6 +42,7 @@
 				$('#chkPostLocked').attr('checked',data.PostLocked);
 				$('#chkRecordLocked').attr('checked',data.RecordLocked);
 				$('#chkEnableTesting').attr('checked',data.EnableTesting);
+				$('#chkJudgeInfoHidden').attr('checked',data.JudgeInfoHidden);
 				$('#selType').val(data.Type);
 			}
 		});
@@ -81,7 +83,8 @@
 					.append('<input id="chkPostLocked" type="checkbox"/><label for="chkPostLocked">锁定</label>'))
 				.append($('<fieldset>')
 					.append('<legend>相关记录</legend>')
-					.append('<input id="chkRecordLocked" type="checkbox"/><label for="chkRecordLocked">锁定</label>'))
+					.append('<input id="chkRecordLocked" type="checkbox"/><label for="chkRecordLocked">锁定</label>')
+					.append('<input id="chkJudgeInfoHidden" type="checkbox"/><label for="chkJudgeInfoHidden">隐藏评测信息</label>'))
 				.append($('<fieldset>')
 					.append('<legend>杂项</legend>')
 					.append('<input id="chkEnableTesting" type="checkbox"/><label for="chkEnableTesting">评测此题</label>')

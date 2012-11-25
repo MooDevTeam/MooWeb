@@ -4,6 +4,10 @@ body{
 a{
 	text-decoration: none;
 	color: blue;
+	border: none;
+}
+img{
+	border: none;
 }
 input{
 	font-size: medium;
@@ -13,7 +17,7 @@ input{
 input.small{
 	font-size: small;
 }
-input[type='text'],input[type='password'],input[type='email']{
+input[type='text'],input[type='password'],input[type='email'],input[type='number']{
 	width: 200px;
 }
 input[type='submit'],input[type='button']{

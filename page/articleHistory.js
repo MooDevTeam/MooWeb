@@ -7,7 +7,10 @@
 			ID: line.ID,
 			CreateTime: line.CreateTime,
 			CreatedBy: Link.user(line.CreatedBy),
-			Reason: line.Reason
+			Reason: line.Reason,
+			dblclick: function(){
+				Page.item.article.load({id:params.id,revisionID:line.ID});
+			}
 		};
 	}
 	
@@ -21,7 +24,7 @@
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
-			},
+			}
 		});
 	}
 	
@@ -56,40 +59,44 @@
 						return false;
 					})));
 		
-		listTable=new ListTable();
-		listTable.columns=
-			[
+		listTable=new ListTable({
+			columns: [
 				{title:'版本编号',type:'number',field:'ID'},
 				{title:'创建时间',type:'date',field:'CreateTime'},
 				{title:'创建者',type:'html',field:'CreatedBy'},
 				{title:'修改原因',type:'text',field:'Reason'}
-			];
-		listTable.dataPicker=dataPicker;
-		listTable.singleMenu=
-			[
-				{title:'查看',action:function(id){Page.item.article.load({'id':params.id,'revisionID':id})}},
+			],
+			dataPicker: dataPicker,
+			singleMenu: [
+				{title:'查看',action:function(id){
+					Page.item.article.load({'id':params.id,'revisionID':id});
+				}},
 				{title:'删除',action:function(id){
 					if(confirm('确实要删除'+id+'号版本吗'))
 						deleteRevision(id);
 				}},
-			];
-		listTable.multipleMenu=
-			[
-				{title:'比较',action:function(ids){
-					if(ids.length!=2){
-						MsgBar.show('warning','请选择恰好两个版本');
-						return;
-					}
+			],
+			doubleMenu: [
+				{title:'比较',action: function(ids){
 					Page.item.articleRevisionCompare.load({articleID:params.id,revisionID:ids});
 				}},
+				{title:'删除',action: function(ids){
+					if(confirm('确实要删除这两个版本吗')){
+						for(var i=0;i<ids.length;i++)
+							deleteRevision(ids[i]);
+					}
+				}}
+			],
+			multipleMenu: [
 				{title:'删除',action:function(ids){
 					if(confirm('确实要删除'+ids.length+'个版本吗')){
 						for(var i=0;i<ids.length;i++)
 							deleteRevision(ids[i]);
 					}
-				}},
-			];
-		listTable.appendTo($('#main'));
+				}}
+			]
+		});
+		$('#main').append(listTable.html());
 		listTable.fillScreen();
 	};
 	Page.item.articleHistory.onunload=function(){

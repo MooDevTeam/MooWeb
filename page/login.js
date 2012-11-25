@@ -8,7 +8,7 @@
 		moo.GET({
 			URI: '/Users/ByName',
 			data: {'name': $('#windowMain #txtUserName').val()},
-			success: doLogin,
+			success: doLogin
 		});
 	}
 	

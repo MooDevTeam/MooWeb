@@ -16,7 +16,10 @@
 			},
 			FullScore: line.FullScore,
 			SubmissionTimes: line.SubmissionTimes,
-			SubmissionUser: line.SubmissionUser
+			SubmissionUser: line.SubmissionUser,
+			dblclick: function(){
+				Page.item.problem.load({id:line.ID});
+			}
 		};
 	}
 	
@@ -30,7 +33,7 @@
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
-			},
+			}
 		});
 	}
 	
@@ -57,9 +60,8 @@
 						return false;
 					})));
 		
-		listTable=new ListTable();
-		listTable.columns=
-			[
+		listTable=new ListTable({
+			columns: [
 				{title:'题目编号',type:'number',field:'ID'},
 				{title:'名称',type:'html',field:'Problem'},
 				{title:'我的分数',type:'link',field:'MyScore'},
@@ -67,26 +69,26 @@
 				{title:'满分',type:'number',field:'FullScore'},
 				{title:'提交次数',type:'number',field:'SubmissionTimes'},
 				{title:'提交人数',type:'number',field:'SubmissionUser'}
-			];
-		listTable.dataPicker=dataPicker;
-		listTable.singleMenu=
-			[
+			],
+			dataPicker: dataPicker,
+			singleMenu: [
 				{title:'查看',action:function(id){Page.item.problem.load({'id':id})}},
 				{title:'删除',action:function(id){
 					if(confirm('确实要删除'+id+'号题目吗'))
 						deleteProblem(id);
 				}},
-			];
-		listTable.multipleMenu=
-			[
+			],
+			multipleMenu: [
 				{title:'删除',action:function(ids){
 					if(confirm('确实要删除'+ids.length+'道题目吗')){
 						for(var i=0;i<ids.length;i++)
 							deleteProblem(ids[i]);
 					}
 				}},
-			];
-		listTable.appendTo($('#main'));
+			]
+		});
+		
+		$('#main').append(listTable.html());
 		listTable.fillScreen();
 	};
 	Page.item.problemList.onunload=function(){

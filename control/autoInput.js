@@ -21,7 +21,7 @@ function AutoInput(params){
 		if(!$(this).val().match(/^\d*$/g)){
 			$('option',self.dataList).each(function(){
 				if($(this).val()==self.textBox.val()){
-					self.textBox.val($(this).text());
+					self.textBox.val($(this).attr('label'));
 				}
 			});
 			if(!$(this).val().match(/^\d*$/g)){
@@ -47,7 +47,7 @@ AutoInput.types={
 				success: function(data){
 					self.dataList.html('');
 					data.forEach(function(line){
-						self.dataList.append($('<option/>').val(line.Problem.Name).text(line.ID));
+						self.dataList.append($('<option/>').val(line.Problem.Name).attr('label',line.ID));
 					});
 				}
 			});
@@ -63,12 +63,12 @@ AutoInput.types={
 				success: function(data){
 					self.dataList.html('');
 					data.forEach(function(line){
-						self.dataList.append($('<option/>').val(line.Name).text(line.ID));
+						self.dataList.append($('<option/>').val(line.Name).attr('label',line.ID));
 					});
 				}
 			});
 		}
-	},
+	}
 };
 
 AutoInput.prototype.html=function(){

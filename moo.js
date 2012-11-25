@@ -12,7 +12,8 @@
 function Moo(){
 }
 
-Moo.API_URL='http://localhost:52590/JsonAPI.svc';
+Moo.URL='http://localhost:52590';
+Moo.API_URL=Moo.URL+'/JsonAPI.svc';
 
 Moo.currentUser=null;
 
@@ -142,11 +143,11 @@ Moo.prototype.GET=function(params){
 		url: Moo.API_URL+params.URI,
 		cache: false,
 		data: params.data,
-		dataType: 'json',
+		dataType: 'json',//Server To Me
 		headers: { 'Auth': localStorage.mooToken || sessionStorage.mooToken },
 		context: this,
 		success: Moo.whenSuccess,
-		error: Moo.errorHandler,
+		error: Moo.errorHandler
 	});
 };
 
@@ -162,7 +163,7 @@ Moo.prototype.POST=function(params){
 		headers: { 'Auth': localStorage.mooToken || sessionStorage.mooToken },
 		context: this,
 		success: Moo.whenSuccess,
-		error: Moo.errorHandler,
+		error: Moo.errorHandler
 	});
 };
 
@@ -178,7 +179,7 @@ Moo.prototype.PUT=function(params){
 		headers: { 'Auth': localStorage.mooToken || sessionStorage.mooToken },
 		context: this,
 		success: Moo.whenSuccess,
-		error: Moo.errorHandler,
+		error: Moo.errorHandler
 	});
 };
 
@@ -192,6 +193,41 @@ Moo.prototype.DELETE=function(params){
 		headers: { 'Auth': localStorage.mooToken || sessionStorage.mooToken },
 		context: this,
 		success: Moo.whenSuccess,
-		error: Moo.errorHandler,
+		error: Moo.errorHandler
 	});
-}
+};
+
+Moo.prototype.sendBlob=function(params){
+	this.params=params;
+	
+	var xhr=new XMLHttpRequest();
+	if(params.progress instanceof Function)
+		xhr.upload.addEventListener('progress',params.progress);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==XMLHttpRequest.DONE){
+			params.success(Number(xhr.response));
+		}
+	};
+	
+	xhr.open('post',Moo.URL+'/Blob.ashx',true);
+	xhr.setRequestHeader('Content-Type','application/octet-stream');
+	xhr.setRequestHeader('Content-Encoding','deflate');
+	xhr.send(new Blob([new Uint8Array(params.data)]));
+};
+
+Moo.prototype.getBlob=function(params){
+	this.params=params;
+	
+	var xhr=new XMLHttpRequest();
+	if(params.progress instanceof Function)
+		xhr.upload.addEventListener('progress',params.progress);
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==XMLHttpRequest.DONE){
+			console.log(xhr.response);
+		}
+	};
+	
+	xhr.open('get',Moo.URL+'/Blob.ashx?id='+params.id,true);
+	xhr.responseType='arraybuffer';
+	xhr.send();
+};

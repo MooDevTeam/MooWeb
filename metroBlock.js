@@ -29,19 +29,19 @@ MetroBlock.item={
 		}),
 	contest: $('<div style="background: darkcyan;"><div class="title">Contest</div></div>')
 		.click(function(){
-			Page.item.contest.load();
+			Page.item.contestList.load();
 			return false;
 		}),
-	wikiSandbox: $('<div style="background: brown;"><div class="title">Wiki Sandbox</div></div>')
+	message: $('<div style="background: brown;"><div class="title">Message</div></div>')
 		.click(function(){
-			Page.item.wikiSandbox.load();
+			Page.item.messageList.load();
 			return false;
 		}),
 	help: $('<div style="background: orangered;"><div class="title">Help</div></div>')
 		.click(function(){
-			Page.item.helpIndex.load();
+			Page.item.wikiSandbox.load();
 			return false;
-		}),
+		})
 };
 
 MetroBlock.init=function(){
@@ -50,6 +50,7 @@ MetroBlock.init=function(){
 	var index=0;
 	for(var blockName in MetroBlock.item){
 		var block=MetroBlock.item[blockName];
+		block.disableSelection();
 		block.addClass('metroBlock').addClass('big');
 		
 		if(index++ % 2 == 0){

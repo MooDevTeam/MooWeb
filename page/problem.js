@@ -117,6 +117,12 @@
 					})))
 			.append('<li><hr/></li>')
 			.append($('<li/>')
+				.append($('<a href="#">测试数据</a>')
+					.click(function(){
+						Page.item.testCaseList.load({id:params.id});
+						return false;
+					})))
+			.append($('<li/>')
 				.append($('<a href="#">相关记录</a>')
 					.click(function(){
 						Page.item.recordList.load({problemID:params.id});

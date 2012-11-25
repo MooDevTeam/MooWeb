@@ -16,9 +16,13 @@
 			Problem: Link.problem(line.Problem),
 			User: Link.user(line.User),
 			Score: {
-				text: line.Score!==null?line.Score>=0?line.Score:'评测中':'尚未评测',
+				text: line.Score===null?'尚未评测'
+					:line.Score==-1?'评测中'
+					:line.Score==-2?'已评测'
+					:line.Score,
 				href: {page:'record',id:line.ID}
-			}
+			},
+			dblclick: function(){Page.item.record.load({id:line.ID});}
 		};
 	}
 	
@@ -40,7 +44,7 @@
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
-			},
+			}
 		});
 	}
 	
@@ -78,19 +82,17 @@
 	Page.item.recordList.onload=function(params){
 		$('#pageTitle').text('记录列表');
 		
-		listTable=new ListTable();
-		listTable.columns=
-			[
+		listTable=new ListTable({
+			columns: [
 				{title:'记录编号',type:'number',field:'ID'},
 				{title:'提交时间',type:'date',field:'CreateTime'},
 				{title:'题目',type:'html',field:'Problem'},
 				{title:'用户',type:'html',field:'User'},
 				{title:'语言',type:'text',field:'Language'},
 				{title:'分数',type:'link',field:'Score'}
-			];
-		listTable.dataPicker=dataPicker.bind(null,params);
-		listTable.singleMenu=
-			[
+			],
+			dataPicker: dataPicker.bind(null,params),
+			singleMenu: [
 				{title:'查看',action:function(id){Page.item.record.load({'id':id})}},
 				{title:'重测',action:function(id){
 					if(confirm('确实要重测'+id+'号记录吗'))
@@ -100,9 +102,8 @@
 					if(confirm('确实要删除'+id+'号记录吗'))
 						deleteRecord(id);
 				}},
-			];
-		listTable.multipleMenu=
-			[
+			],
+			multipleMenu: [
 				{title:'重测',action:function(ids){
 					if(confirm('确实要重测'+ids.length+'条记录吗')){
 						for(var i=0;i<ids.length;i++)
@@ -115,8 +116,10 @@
 							deleteRecord(ids[i]);
 					}
 				}},
-			];
-		listTable.appendTo($('#main'));
+			]
+		});
+		
+		$('#main').append(listTable.html());
 		listTable.fillScreen();
 	};
 	Page.item.recordList.onunload=function(){

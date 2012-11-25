@@ -7,6 +7,9 @@
 			ID: line.ID,
 			Article: Link.article(line.Article),
 			Problem: line.Problem.ID==null?'':Link.problem(line.Problem),
+			dblclick: function(){
+				Page.item.article.load({id:line.ID});
+			}
 		};
 	}
 	
@@ -26,7 +29,7 @@
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
-			},
+			}
 		});
 	}
 	
@@ -57,32 +60,31 @@
 						return false;
 					})));
 		
-		listTable=new ListTable();
-		listTable.columns=
-			[
+		listTable=new ListTable({
+			columns: [
 				{title:'文章编号',type:'number',field:'ID'},
 				{title:'名称',type:'html',field:'Article'},
 				{title:'对应题目',type:'html',field:'Problem'},
-			];
-		listTable.dataPicker=dataPicker;
-		listTable.singleMenu=
-			[
+			],
+			dataPicker: dataPicker,
+			singleMenu: [
 				{title:'查看',action:function(id){Page.item.article.load({'id':id})}},
 				{title:'删除',action:function(id){
 					if(confirm('确实要删除'+id+'号文章吗'))
 						deleteArticle(id);
 				}},
-			];
-		listTable.multipleMenu=
-			[
+			],
+			multipleMenu: [
 				{title:'删除',action:function(ids){
 					if(confirm('确实要删除'+ids.length+'篇文章吗')){
 						for(var i=0;i<ids.length;i++)
 							deleteArticle(ids[i]);
 					}
 				}},
-			];
-		listTable.appendTo($('#main'));
+			]
+		});
+		
+		$('#main').append(listTable.html());
 		listTable.fillScreen();
 	};
 	Page.item.articleList.onunload=function(){

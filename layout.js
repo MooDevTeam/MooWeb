@@ -14,7 +14,6 @@ Layout.init=function(){
 			.append('<div class="clear"/>'))
 		.append($('<div id="pageBody"/>')
 			.append($('<div id="sidePanel" class="full"/>')
-				.disableSelection()
 				.append($('<a href="#" title="返回首页" id="backToHomepage"><img src="image/home.png" alt="Back To Homepage"/></a>').hide())
 				.append('<div id="homepage"/>')
 				.append('<ul id="toolbar" style="display: none;"/>'))
