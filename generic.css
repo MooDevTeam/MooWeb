@@ -9,6 +9,12 @@ a{
 img{
 	border: none;
 }
+caption{
+	border-top: blue dotted 2px;
+	padding-top: 10px;
+	font-weight: bold;
+	font-size: large;
+}
 input{
 	font-size: medium;
 	margin-top: 3px;

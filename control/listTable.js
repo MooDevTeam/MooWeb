@@ -3,6 +3,7 @@
 	dataPicker: function(start,callback)
 		callback: function([{fieldName:xxxx}],bool haveMore)
 	singleMenu: [{title:xxx,action:function(data)}]
+	doubleMenu: [{title:xxx,action:function(data)}]
 	multipleMenu: [{title:xxx,action:function(datas)}]
 */
 function ListTable(params){
@@ -18,10 +19,13 @@ function ListTable(params){
 	//Column Titles
 	var titleRow=$('<tr/>');
 	params.columns.forEach(function(desc){
-		titleRow.append($('<th/>').text(desc.title));
+		titleRow.append($('<th/>').html(desc.title));
 	});
 	
-	this.table=$('<table class="listTable"/>')
+	this.table=$('<table class="listTable"/>');
+	if(params.caption)
+		this.table.append($('<caption/>').html(params.caption));
+	this.table
 		.append($('<thead/>')
 			.append(titleRow))
 		.append($('<tbody/>'))

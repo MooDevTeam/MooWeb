@@ -28,7 +28,7 @@ Layout.init=function(){
 						.append('<a id="historyForward" href="#"><img src="image/forward.png" alt="Go Forward" title="前进"/></a>')
 						.append('<a id="refresh" href="#"><img src="image/refresh.png" alt="Refresh" title="刷新本页"/></a>')))
 				.append('<div id="main" style="display: none;"/>')
-				.append($('<div id="mainBottomBar">&copy; 2012 Mr.Phone</div>')
+				.append($('<div id="mainBottomBar">Moo II &copy; 2012 Mr.Phone 唉木欧欧 爱爱</div>')
 					.disableSelection()))
 			.append('<div class="clear"/>'));
 	/*

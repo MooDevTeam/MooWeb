@@ -38,10 +38,10 @@ Link.contest=function(info){
 }
 
 Link.tag=function(info){
-	return $('<a class="tag" href="?page=articleList&tagID='+info.ID+'"/>')
+	return $('<a class="tag" href="#"/>')
 		.text(info.Name)
 		.click(function(){
-			Page.item.articleList.load({tagID:info.ID});
+			info.page.load({tagID:info.ID});
 			return false;
 		})
 		.append($('<a class="tagDelete" href="#" title="删除"><img src="image/delete.png" alt="Delete"/></a>')

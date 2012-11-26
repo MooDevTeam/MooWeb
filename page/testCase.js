@@ -13,14 +13,64 @@
 		});
 	}
 	
+	function modifyTimeLimit(oldTimeLimit){
+		Prompt.number({
+			text: '请输入新的时间限制',
+			value: oldTimeLimit,
+			min: 0,
+			max: 60000,
+			success: function(newTimeLimit){
+				new Moo().PUT({
+					URI: '/Problems/xxx/TestCases/Tranditional/'+params.id,
+					data: {testCase:{
+						TimeLimit: newTimeLimit
+					}},
+					success: function(){
+						Page.refresh();
+					}
+				});
+			}
+		});
+		return false;
+	}
+	
+	function modifyMemoryLimit(oldMemoryLimit){
+		Prompt.number({
+			text: '请输入新的内存限制',
+			value: oldMemoryLimit,
+			min: 0,
+			max: 2147483647,
+			success: function(newMemoryLimit){
+				new Moo().PUT({
+					URI: '/Problems/xxx/TestCases/Tranditional/'+params.id,
+					data: {testCase:{
+						MemoryLimit: newMemoryLimit
+					}},
+					success: function(){
+						Page.refresh();
+					}
+				});
+			}
+		});
+		return false;
+	}
+	
 	function loadTranditional(data){
 		$('#main')
 			.append(new DetailTable({
 						columns:[
 							{title:'题目',type:'html',data:Link.problem(data.Problem)},
 							{title:'类型',type:'text',data:'传统'},
-							{title:'时间限制(ms)',type:'number',data:data.TimeLimit},
-							{title:'内存限制(bytes)',type:'number',data:data.MemoryLimit},
+							{title:'时间限制(ms)',type:'html',data:
+								$('<div/>')
+									.text(String(data.TimeLimit))
+									.append($('<a href="#"><img src="image/pen.png" style="width: 20px; vertical-align: bottom;" alt=""/></a>')
+										.click(modifyTimeLimit.bind(null,data.TimeLimit)))},
+							{title:'内存限制(bytes)',type:'html',data:
+								$('<div/>')
+									.text(String(data.MemoryLimit))
+									.append($('<a href="#"><img src="image/pen.png" style="width: 20px; vertical-align: bottom;" alt=""/></a>')
+										.click(modifyMemoryLimit.bind(null,data.MemoryLimit)))},
 							{title:'分数',type:'number',data:data.Score}
 						]
 					}).html())

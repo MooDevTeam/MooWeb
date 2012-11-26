@@ -26,7 +26,7 @@ $(function(){
 	MsgBar.init();
 	
 	//TODO Debugging
-	if(!Config.debug)
+	//if(!Config.debug)
 	$(document).bind('keydown',function(e) {
 		if(e.which === 116 || e.which === 82 && e.ctrlKey) {//F5 || Ctrl-R
 			if(Page.currentPage){
@@ -36,13 +36,20 @@ $(function(){
 				return true;
 		}
 	});
-	
+	/*
 	$('#sidePanel')
 		.append($('<a href="#">Debug</a>')
 			.click(function(){
-				Page.item.testCaseCreate.load({id:1});
+				Prompt.string({
+					text: 'Please Input Problem ID',
+					value: 'init',
+					success: function(id){
+						alert(id);
+					}
+				});
 				return false;
 			}));
+	*/
 	
 	refreshUserInfo(function(){
 		if(Moo.currentUser){ //Success
@@ -168,4 +175,8 @@ function URLDecode(str){
 
 Date.prototype.toString=function(){
 	return this.getFullYear()+'-'+(this.getMonth()+1)+'-'+this.getDate()+' '+this.getHours()+':'+this.getMinutes()+':'+this.getSeconds();
+};
+
+Date.prototype.toMS=function(){
+	return "\/Date(" + this.getTime() + "+0000)\/";
 };

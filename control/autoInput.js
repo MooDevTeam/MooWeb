@@ -1,4 +1,12 @@
 ﻿"use strict";
+/**
+	id
+	requried
+	autofocus
+	class
+	value
+	type
+*/
 function AutoInput(params){
 	var self=this;
 	this.uniqueID=Math.random();
@@ -7,7 +15,8 @@ function AutoInput(params){
 		.append(this.dataList=$('<datalist id="lst'+this.uniqueID+'"/>'))
 		.append(this.textBox=$('<input type="text"/>')
 			.attr('id',params.id?params.id:'txt'+this.uniqueID)
-			.attr('required',params.required?true:false)
+			.attr('required',!!params.required)
+			.attr('autofocus',!!params.autofocus)
 			.addClass(params['class']?params['class']:'')
 			.val(params.value?params.value:'')
 			.attr('list','lst'+this.uniqueID)
@@ -73,4 +82,8 @@ AutoInput.types={
 
 AutoInput.prototype.html=function(){
 	return this.container;
+};
+
+AutoInput.prototype.val=function(){
+	return this.textBox.val();
 };

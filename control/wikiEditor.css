@@ -2,6 +2,8 @@
 	width: 80%;
 	background: whitesmoke;
 	padding-bottom: 5px;
+	display: inline-block;
+	text-align: left;
 }
 .wikiEditorToolBar{
 	margin-left: 10px;

@@ -1,9 +1,8 @@
 ﻿"use strict";
 /**
-	params:{
-		id,
-		placeholder
-	}
+	id,
+	placeholder,
+	value
 */
 function WikiEditor(params){
 	var self=this;
@@ -83,6 +82,7 @@ function WikiEditor(params){
 					+(params.placeholder?' placeholder="'+params.placeholder+'"':'')
 					+' cols="0" rows="20"/>')
 				.bind('input',this.autoPreview.bind(this))
+				.val(params.value?params.value:'')
 				.keydown(function(evt){
 					if(evt.keyCode==9){//Tab
 						var start = this.selectionStart;
@@ -148,8 +148,6 @@ WikiEditor.prototype.warpText=function(prefix,tip,suffix,selectionStart,selectio
 	var textBefore=this.textarea.val().substring(0,selStart),
 		textAfter=this.textarea.val().substring(selEnd),
 		textSelected=this.textarea.val().substring(selStart,selEnd);
-	
-	
 	
 	if(selEnd-selStart==0){//Nothing
 		this.textarea.val(textBefore+prefix+tip+suffix+textAfter);

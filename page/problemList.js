@@ -1,6 +1,6 @@
 ﻿"use strict";
 (function(){
-	var listTable;
+	var listTable,params;
 	
 	function translate(line){
 		return {
@@ -27,9 +27,13 @@
 		var moo=new Moo();
 		moo.restore=callback.bind(null,[],false);
 		
+		var query={skip:start,top:Config.itemNumberEachTime};
+		if(params.tagID)
+			query.tagID=params.tagID;
+		
 		moo.GET({
 			URI: '/Problems',
-			data: {skip:start,top:Config.itemNumberEachTime},
+			data: query,
 			success: function(data){
 				data=data.map(translate);
 				callback(data,data.length==Config.itemNumberEachTime);
@@ -49,7 +53,8 @@
 	
 	Page.item.problemList=new Page();
 	Page.item.problemList.name='problemList';
-	Page.item.problemList.onload=function(params){
+	Page.item.problemList.onload=function(_params){
+		params=_params;
 		$('#pageTitle').text('题目列表');
 		
 		$('#toolbar')
