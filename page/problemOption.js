@@ -91,7 +91,7 @@
 					.append($('<div/>')
 						.append('<label for="selType">题目类型</label>')
 						.append($('<select id="selType"/>')
-							.append('<option value="Tranditional">传统</option>')
+							.append('<option value="Traditional">传统</option>')
 							.append('<option value="SpecialJudged">自定义测评</option>')
 							.append('<option value="Interactive">交互式</option>')
 							.append('<option value="AnswerOnly">提交答案</option>'))))

@@ -6,7 +6,7 @@
 		return {
 			ID: line.ID,
 			Type: {
-				TranditionalTestCase: '传统',
+				TraditionalTestCase: '传统',
 				SpecialJudgedTestCase: '自定义测评',
 				InteractiveTestCase: '交互式',
 				AnswerOnlyTestCase: '提交答案'

@@ -2,7 +2,7 @@
 var Link={};
 
 Link.user=function(info){
-	return $('<a href="?page=user&id='+info.ID+'"/>')
+	return $('<a href="#!page=user&id='+info.ID+'"/>')
 		.text(info.Name)
 		.click(function(){
 			Page.item.user.load({id:info.ID});
@@ -11,7 +11,7 @@ Link.user=function(info){
 }
 
 Link.problem=function(info){
-	return $('<a href="?page=problem&id='+info.ID+'"/>')
+	return $('<a href="#!page=problem&id='+info.ID+'"/>')
 		.text(info.Name)
 		.click(function(){
 			Page.item.problem.load({id:info.ID});
@@ -20,7 +20,7 @@ Link.problem=function(info){
 }
 
 Link.article=function(info){
-	return $('<a href="?page=article&id='+info.ID+'"/>')
+	return $('<a href="#!page=article&id='+info.ID+'"/>')
 		.text(info.Name)
 		.click(function(){
 			Page.item.article.load({id:info.ID});
@@ -29,7 +29,7 @@ Link.article=function(info){
 }
 
 Link.contest=function(info){
-	return $('<a href="?page=contest&id='+info.ID+'"/>')
+	return $('<a href="#!page=contest&id='+info.ID+'"/>')
 		.text(info.Name)
 		.click(function(){
 			Page.item.contest.load({id:info.ID});

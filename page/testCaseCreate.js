@@ -54,7 +54,7 @@
 			$('.status',input).text('正在添加');
 			$('.status',answer).text('正在添加');
 			new Moo().POST({
-				URI: '/Problems/'+params.id+'/TestCases/Tranditional',
+				URI: '/Problems/'+params.id+'/TestCases/Traditional',
 				data: {testCase:{
 					InputBlobID: inputBlobID,
 					AnswerBlobID: answerBlobID,

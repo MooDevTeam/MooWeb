@@ -21,7 +21,7 @@
 			max: 60000,
 			success: function(newTimeLimit){
 				new Moo().PUT({
-					URI: '/Problems/xxx/TestCases/Tranditional/'+params.id,
+					URI: '/Problems/xxx/TestCases/Traditional/'+params.id,
 					data: {testCase:{
 						TimeLimit: newTimeLimit
 					}},
@@ -42,7 +42,7 @@
 			max: 2147483647,
 			success: function(newMemoryLimit){
 				new Moo().PUT({
-					URI: '/Problems/xxx/TestCases/Tranditional/'+params.id,
+					URI: '/Problems/xxx/TestCases/Traditional/'+params.id,
 					data: {testCase:{
 						MemoryLimit: newMemoryLimit
 					}},
@@ -55,7 +55,7 @@
 		return false;
 	}
 	
-	function loadTranditional(data){
+	function loadTraditional(data){
 		$('#main')
 			.append(new DetailTable({
 						columns:[
@@ -130,8 +130,8 @@
 							return false;
 						})));
 				switch(data.Type){
-					case 'TranditionalTestCase':
-						loadTranditional(data);
+					case 'TraditionalTestCase':
+						loadTraditional(data);
 						break;
 					case 'SpecialJudgedTestCase':
 						loadSpecailJudged(data);

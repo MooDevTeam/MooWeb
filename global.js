@@ -24,6 +24,7 @@ $(function(){
 	Layout.init();
 	MetroBlock.init();
 	MsgBar.init();
+	Page.recentHash=location.hash;
 	
 	//TODO Debugging
 	//if(!Config.debug)
@@ -54,8 +55,8 @@ $(function(){
 	refreshUserInfo(function(){
 		if(Moo.currentUser){ //Success
 			var queryString={};
-			if(window.location.search.length>1)
-				queryString=parseURL(window.location.search.substring(1));
+			if(window.location.hash.length>2)
+				queryString=parseURL(window.location.hash.substring(2));
 			
 			if(queryString.page){
 				Page.item[queryString.page].load(queryString);
@@ -85,6 +86,8 @@ $(function(){
 			$('#homepage').hide().fadeIn('slow');
 		}
 	});
+	
+	setInterval(Page.pollHash,500);
 });
 
 function refreshUserInfo(callback){
@@ -171,6 +174,12 @@ function parseURL(arg){
 
 function URLDecode(str){
 	return decodeURIComponent(str.replace('+','%20'));
+}
+/**
+	[randNumMin,randNumMax)
+*/
+function randInt(randNumMin,randNumMax){
+	return Math.floor(Math.random() * (randNumMax - randNumMin)) + randNumMin;
 }
 
 Date.prototype.toString=function(){

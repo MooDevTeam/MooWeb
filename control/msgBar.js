@@ -21,6 +21,10 @@ MsgBar.show=function(type,dom){
 			setTimeout(function(){
 				$('.close',msgBar).click();
 			},1000);
+		}else{
+			setTimeout(function(){
+				$('.close',msgBar).click();
+			},3000);
 		}
 	});
 };

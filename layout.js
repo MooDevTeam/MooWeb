@@ -14,6 +14,7 @@ Layout.init=function(){
 			.append('<div class="clear"/>'))
 		.append($('<div id="pageBody"/>')
 			.append($('<div id="sidePanel" class="full"/>')
+				.append('<div id="sidePanelBackground"/>')
 				.append($('<a href="#" title="返回首页" id="backToHomepage"><img src="image/home.png" alt="Back To Homepage"/></a>').hide())
 				.append('<div id="homepage"/>')
 				.append('<ul id="toolbar" style="display: none;"/>'))
@@ -21,12 +22,9 @@ Layout.init=function(){
 				.append($('<div id="mainTopBar"/>')
 					.disableSelection()
 					.append($('<div id="mainTopBarLeft"/>')
-						.append('<a id="pageTitle"/>')
-						.append('<a href="#" id="copyPageURL">复制本页地址</a>'))
+						.append('<a id="pageTitle"/>'))
 					.append($('<div id="mainTopBarRight"/>')
-						.append('<a id="historyBackward" href="#"><img src="image/backward.png" alt="Go Backward" title="后退"/></a>')
-						.append('<a id="historyForward" href="#"><img src="image/forward.png" alt="Go Forward" title="前进"/></a>')
-						.append('<a id="refresh" href="#"><img src="image/refresh.png" alt="Refresh" title="刷新本页"/></a>')))
+						.append('<a id="refresh" href="#"><img src="image/refresh.png" alt="Refresh" title="刷新"/></a>')))
 				.append('<div id="main" style="display: none;"/>')
 				.append($('<div id="mainBottomBar">Moo II &copy; 2012 Mr.Phone 唉木欧欧 爱爱</div>')
 					.disableSelection()))
@@ -47,6 +45,9 @@ Layout.init=function(){
 			}
 		});
 	*/
+	$('#sidePanelBackground').css('background','url("'+Layout.getRandomBackground()+'")');
+	
+	
 	$('#loginLink')
 		.click(function(){
 			PopPage.item.login.load();
@@ -86,33 +87,18 @@ Layout.init=function(){
 		return false;
 	});
 	
-	$('#copyPageURL').click(function(){
-		$('#pageTitle').hide().toggle("highlight",{color:'yellow'},'slow',function(){
-			MsgBar.show('tip','欲复制本页地址，仅需找到本页标题，右击，选择“复制链接地址”即可。');
-		});
-		return false;
-	});
-	
 	$('#refresh').click(function(){
 		if(Page.currentPage){
 			Page.refresh();
 		}
 		return false;
 	});
-	
-	$('#historyBackward').click(function(){
-		if(!$(this).hasClass('disabled'))
-			Page.history.backward();
-		return false;
-	});
-	
-	$('#historyForward').click(function(){
-		if(!$(this).hasClass('disabled'))
-			Page.history.forward();
-		return false;
-	});
-	
+
 	Layout.cssTricks();
+};
+
+Layout.getRandomBackground=function(){
+	return 'image/background/pic'+randInt(1,103)+'.jpg';
 };
 
 Layout.cssTricks=function(){
@@ -147,6 +133,7 @@ Layout.showMetroBlock=function(block,callback){
 	function stepTwo(){
 		Homepage.onunload();
 		$('#sidePanel').switchClass('full','normal',Layout.speed);
+		$('#sidePanelBackground').switchClass('full','normal',Layout.speed);
 		$('#mainArea').switchClass('hidden','normal',Layout.speed);
 		$('#backToHomepage').fadeIn(Layout.speed,stepThree);
 	}
@@ -195,6 +182,7 @@ Layout.backToHomepage=function(callback){
 	
 	function stepOne(){
 		$('#sidePanel').switchClass('normal','full',Layout.speed,stepTwo);
+		$('#sidePanelBackground').switchClass('normal','full',Layout.speed);
 		$('#mainArea').switchClass('normal','hidden',Layout.speed);
 		$('#backToHomepage').fadeOut(Layout.speed);
 		

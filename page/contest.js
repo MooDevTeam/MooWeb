@@ -201,7 +201,7 @@
 								ID: p.ID,
 								Problem: Link.problem(p),
 								Type: {
-									'Tranditional':'传统',
+									'Traditional':'传统',
 									'SpecialJudged':'自定义测评',
 									'Interactive':'交互式',
 									'AnswerOnly':'提交答案'

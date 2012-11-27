@@ -89,6 +89,12 @@
 				$('#main')
 					.append(new DetailTable({
 						columns: [
+							{title: '类型',type:'text',data:{
+								'Traditional':'传统',
+								'SpecialJudged':'自定义测评',
+								'Interactive':'交互式',
+								'AnswerOnly':'提交答案'
+							}[data.Type]},
 							{title: '创建者',type:'html',data: Link.user(data.CreatedBy)},
 							{title: '创建时间',type: 'date',data: data.CreateTime},
 							{title: '最后编辑者',type: 'html',data: Link.user(data.Revision.CreatedBy)},
