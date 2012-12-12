@@ -1,15 +1,45 @@
 ﻿"use strict";
 (function(){
+	var params;
+	var autoRefreshHandle;
+	
+	function modifyPublicCode(old){
+		new Moo().PUT({
+			URI: '/Records/'+params.id,
+			data: {record:{
+				PublicCode: !old
+			}},
+			success: function(){
+				Page.refresh();
+			}
+		});
+		return false;
+	}
+
 	Page.item.record=new Page();
 	Page.item.record.name='record';
 	Page.item.record.metroBlock=MetroBlock.item.record;
-	Page.item.record.onload=function(params){
+	Page.item.record.onload=function(_params){
+		params=_params;
 		$('#pageTitle').text('第'+params.id+'号记录');
 		
 		var moo=new Moo();
 		moo.GET({
 			URI: '/Records/'+params.id,
 			success: function(data){
+				
+				if(data.Score===null || data.Score==-1){//Auto Refresh
+					autoRefreshHandle=setInterval(function(){
+						new Moo().GET({
+							URI: '/Records/'+params.id,
+							success: function(newData){
+								if(newData.Score!==data.Score)
+									Page.refresh();
+							}
+						});
+					},2000);
+				}
+				
 				var columns=[
 					{title:'题目',type:'html',data:Link.problem(data.Problem)},
 					{title:'用户',type:'html',data:Link.user(data.User)},
@@ -24,7 +54,10 @@
 						}[data.Language] || data.Language},
 					{title:'代码长度',type:'number',data:data.CodeLength},
 					{title:'评测状态',type:'text',data:data.Score===null?'尚未评测':data.Score==-1?'正在评测':'已评测'},
-					{title:'源码可见性',type:'text',data:data.PublicCode?'公开':'私有'}
+					{title:'源码可见性',type:'html',data: $('<div/>')
+						.text(data.PublicCode?'公开':'私有')
+						.append($('<a href="#"><img src="image/pen.png" alt="" style="width: 20px; vertical-align: bottom;"/></a>')
+							.click(modifyPublicCode.bind(null,data.PublicCode)))}
 				];
 				if(data.Score!==null && data.Score>=0)
 					columns.push({title:'分数',type:'number',data:data.Score});
@@ -63,5 +96,9 @@
 		});
 	};
 	Page.item.record.onunload=function(){
+		if(autoRefreshHandle!==undefined){
+			clearInterval(autoRefreshHandle);
+			autoRefreshHandle=undefined;
+		}
 	};
 })();

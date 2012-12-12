@@ -1,0 +1,4 @@
+﻿Moo以Google Chrome为参照进行开发，使用最新版Google Chrome将会获得最佳浏览体验。
+<a href="https://github.com/MooDevTeam/Moo">Moo</a>及<a href="https://github.com/MooDevTeam/MooWeb">MooWeb</a>由<a href="mailto: onetwogoo@live.com">Mr.Phone</a>开发，其评测核心<a href="https://github.com/variantf/vJudgeKernel">v-Judge_Kernel</a>由<a href="mailto: sunjiayu_2006@126.com">VariantF</a>编写。
+F11全屏浏览，效果更佳。
+Moo使用最新HTML5技术，努力为您带来最佳浏览体验，但难免浏览器兼容性较差，请考虑使用最新版本的浏览器。

@@ -102,7 +102,7 @@
 							{title: '标签',type: 'html',data: tags}
 						]
 					}).html())
-					.append($('<a href="#" style="float: right;"><img src="image/pen.png" alt="Modify Content" title="修改内容"/></a>')
+					.append($('<a href="#" style="float: right;" title="修改内容"><img src="image/pen.png" alt="Modify Content"/></a>')
 							.click(modifyContent.bind(null,data.Content)))
 					.append($('<div id="content"/>')
 						.css('margin','10px')

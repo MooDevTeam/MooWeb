@@ -202,3 +202,54 @@ Prompt.number=function(params){
 				})));
 	PopPage.item.prompt.load(params);
 };
+
+Prompt.email=function(params){
+	var input=$('<input type="email" required="true" autofocus="autofocus"/>');
+	
+	if(params.value)
+		input.val(params.value);
+	params.form=$('<form/>')
+		.submit(function(){
+			params.success(input.val());
+			PopPage.currentPage.unload();
+			return false;
+		})
+		.append(input)
+		.append($('<div style="text-align: center;"/>')
+			.append('<input type="submit" value="确定"/>')
+			.append(' ')
+			.append($('<input type="button" value="取消"/>')
+				.click(function(){
+					PopPage.currentPage.unload();
+				})));
+	PopPage.item.prompt.load(params);
+};
+
+Prompt.select=function(params){
+	var input=$('<select/>');
+	
+	params.options.forEach(function(option){
+		console.log(option);
+		input.append($('<option/>')
+			.text(option.text)
+			.val(option.value));
+	});
+	
+	if(params.value)
+		input.val(params.value);
+	params.form=$('<form/>')
+		.submit(function(){
+			params.success(input.val());
+			PopPage.currentPage.unload();
+			return false;
+		})
+		.append(input)
+		.append($('<div style="text-align: center;"/>')
+			.append('<input type="submit" value="确定"/>')
+			.append(' ')
+			.append($('<input type="button" value="取消"/>')
+				.click(function(){
+					PopPage.currentPage.unload();
+				})));
+	PopPage.item.prompt.load(params);
+};

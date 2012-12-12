@@ -1,4 +1,4 @@
-﻿.fileList{
+﻿.fileList.half{
 	float: left;
 	width: 50%;
 }
@@ -26,8 +26,9 @@
 .fileList li:hover{
 	background: lightgray;
 }
-
 .fileList li .fileImg{
+	background: url("../image/file1.png");
+	background-size: 55px;
 	float: left;
 	width: 55px;
 	height: 55px;

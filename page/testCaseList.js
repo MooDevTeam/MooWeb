@@ -12,6 +12,7 @@
 				AnswerOnlyTestCase: '提交答案'
 			}[line.Type] || '未知',
 			CreatedBy: Link.user(line.CreatedBy),
+			CreateTime: line.CreateTime,
 			dblclick: function(){
 				Page.item.testCase.load({id:line.ID});
 			}
@@ -72,6 +73,7 @@
 				{title:'测试数据编号',type:'number',field:'ID'},
 				{title:'类型',type:'text',field:'Type'},
 				{title:'创建者',type:'html',field:'CreatedBy'},
+				{title:'创建时间',type:'date',field:'CreateTime'},
 			],
 			dataPicker: dataPicker,
 			singleMenu: [

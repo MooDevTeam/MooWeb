@@ -17,7 +17,7 @@
 			success: function(){
 				Page.backToHomepage();
 				PopPage.item.login.load({userName:$('#txtUserName').val()});
-				MsgBar.show('info','注册成功，请登录');
+				new MsgBar('info','注册成功，请登录');
 			}
 		});
 		return false;
@@ -63,7 +63,7 @@
 				.append('<div><input id="txtEmail" type="email" placeholder="电子邮箱" required="required"/></div>')
 				.append('<div><textarea id="txtTOS" readonly="readonly" rows="20" cols="0" style="width: 80%;"/></div>')
 				.append('<div><input id="btnSubmit" type="submit" value="同意以上服务条款并注册"/></div>'));
-		$.get('TermsOfService.txt',function(data){
+		$.get('resources/terms.txt',function(data){
 			$('#txtTOS').text(data);
 		});
 	};

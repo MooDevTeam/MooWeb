@@ -14,20 +14,27 @@
 	
 	function doLogin(userID){
 		if(userID==null){
-			MsgBar.show('warning','用户名不存在');
-			throw ''; 
+			new MsgBar('warning','用户名不存在');
+			moo.restore();
+			return;
 		}
+		
+		var pwd=$('#windowMain #txtPassword').val();
+		var rsa=new RSAKey();
+		rsa.setPublic(Moo.publicKey.Modulus,Moo.publicKey.Exponent);
+		pwd=rsa.encrypt_b64(pwd);
 		moo.POST({
 			URI: '/Login',
-			data: {'userID': userID, 'password': $('#windowMain #txtPassword').val()},
+			data: {'userID': userID, 'password': pwd},
 			success: afterLogin
 		});
 	}
 	
 	function afterLogin(token){
 		if(token==null){
-			MsgBar.show('error','身份验证失败');
-			throw '';
+			new MsgBar('error','身份验证失败');
+			moo.restore();
+			return;
 		}
 		
 		localStorage.removeItem('mooToken');
@@ -39,7 +46,7 @@
 		}
 		refreshUserInfo();
 		PopPage.item.login.unload();
-		MsgBar.show('info','登录成功');
+		new MsgBar('info','登录成功');
 	}
 	
 	PopPage.item.login=new PopPage();

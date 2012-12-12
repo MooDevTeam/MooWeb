@@ -69,7 +69,7 @@
 					success: function(data){
 						listTable.rowMap[id].fadeOut('slow',function(){
 							listTable.bindRow(listTable.rowMap[id],translate(data[0]));
-							listTable.rowMap[id].fadeIn('slow');
+							listTable.rowMap[id].fadeIn('slow').css('display','table-row');
 						});
 					}
 				});

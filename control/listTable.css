@@ -17,7 +17,6 @@
 .listTableWrapper > .menu > li > a {
 	display: block;
 	color: #404040;
-	font-family: sans-serif;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 5px;
@@ -36,24 +35,26 @@
 }
 .listTable > thead > tr > th{
 	padding: 5px;
+	white-space: nowrap;
 	font-weight: normal;
 	text-align: left;
 }
 .listTable > tbody > tr > td{
+	white-space: nowrap;
 	padding: 5px;
 }
 .listTable > tbody > tr{
 	color: #404040;
 }
 .listTable > tbody > tr:hover{
-	background: lightgray;
+	background: lightgray !important;
 }
 .listTable > tbody > tr.selected{
-	background: #094AB2;
+	background: #094AB2 !important;
 	color: whitesmoke;
 	font-weight: bold;
 }
-.listTable > tbody > tr.selected > td > a{
+.listTable > tbody > tr.selected > td a{
 	color: whitesmoke;
 }
 .listTable > tfoot > tr > td{

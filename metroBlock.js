@@ -12,14 +12,14 @@ MetroBlock.item={
 			Page.item.recordList.load();
 			return false;
 		}),
-	post: $('<div style="background: red;"><div class="title">Post</div></div>')
-		.click(function(){
-			Page.item.postList.load();
-			return false;
-		}),
 	article: $('<div style="background: purple;"><div class="title">Article</div></div>')
 		.click(function(){
 			Page.item.articleList.load();
+			return false;
+		}),
+	post: $('<div style="background: red;"><div class="title">Post</div></div>')
+		.click(function(){
+			Page.item.postList.load();
 			return false;
 		}),
 	user: $('<div style="background: goldenrod;"><div class="title">User</div></div>')
@@ -32,9 +32,9 @@ MetroBlock.item={
 			Page.item.contestList.load();
 			return false;
 		}),
-	message: $('<div style="background: brown;"><div class="title">Message</div></div>')
+	file: $('<div style="background: brown;"><div class="title">File</div></div>')
 		.click(function(){
-			Page.item.messageList.load();
+			Page.item.fileList.load();
 			return false;
 		}),
 	help: $('<div style="background: orangered;"><div class="title">Help</div></div>')

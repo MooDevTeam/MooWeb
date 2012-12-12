@@ -2,12 +2,18 @@
 var Link={};
 
 Link.user=function(info){
-	return $('<a href="#!page=user&id='+info.ID+'"/>')
-		.text(info.Name)
+	var result=$('<a href="#!page=user&id='+info.ID+'"/>');
+	if(info.Email!==undefined){
+		result.append($('<img alt="Avatar" style="vertical-align: middle;"/>')
+			.attr('src',Gravatar.get(info.Email,30)))
+	}
+	result
+		.append(htmlEncode(info.Name))
 		.click(function(){
 			Page.item.user.load({id:info.ID});
 			return false;
 		});
+	return result;
 }
 
 Link.problem=function(info){
@@ -24,6 +30,15 @@ Link.article=function(info){
 		.text(info.Name)
 		.click(function(){
 			Page.item.article.load({id:info.ID});
+			return false;
+		});
+}
+
+Link.file=function(info){
+	return $('<a href="#!page=file&id='+info.ID+'"/>')
+		.text(info.Name)
+		.click(function(){
+			Page.item.file.load({id:info.ID});
 			return false;
 		});
 }

@@ -10,7 +10,7 @@
 					URI: '/Contests/'+params.id+'/Problems',
 					data: {problemID:id},
 					success: function(){
-						MsgBar.show('info','题目成功添加');
+						new MsgBar('info','题目成功添加');
 						Page.refresh();
 					}
 				});
@@ -29,7 +29,7 @@
 						StartTime: date.toMS()
 					}},
 					success: function(){
-						MsgBar.show('info','开始时间已修改');
+						new MsgBar('info','开始时间已修改');
 						Page.refresh();
 					}
 				});
@@ -47,7 +47,7 @@
 						EndTime: date.toMS()
 					}},
 					success: function(){
-						MsgBar.show('info','结束时间已修改');
+						new MsgBar('info','结束时间已修改');
 						Page.refresh();
 					}
 				});
@@ -66,7 +66,7 @@
 						Description: newDesc
 					}},
 					success: function(){
-						MsgBar.show('info','描述修改成功');
+						new MsgBar('info','描述修改成功');
 						Page.refresh();
 					}
 				});
@@ -98,7 +98,7 @@
 		new Moo().POST({
 			URI: '/Contests/'+params.id+'/Attend',
 			success: function(){
-				MsgBar.show('info','已报名');
+				new MsgBar('info','已报名');
 				Page.refresh();
 			}
 		});
@@ -168,24 +168,6 @@
 						$('<input type="button" value="立即报名"/>')
 							.click(attend)});
 				
-				$('#main')
-					.append(new DetailTable({
-						columns: detailTableColumns
-					}).html())
-					.append($('<a href="#" title="修改描述" style="float: right;"><img src="image/pen.png" alt=""/></a>')
-						.click(modifyDescription.bind(null,data.Description)))
-					.append($('<div id="divContent" style="margin: 10px;"/>')
-						.text(data.Description))
-					.append('<div class="clear"/>');
-				new Moo().POST({
-					URI: '/ParseWiki',
-					data: {wiki:data.Description},
-					success: function(data){
-						$('#divContent').html(data);
-						$('pre code').each(function(i,e){hljs.highlightBlock(e);});
-					}
-				});
-				
 				listTable=new ListTable({
 					caption: $('<span/>')
 						.append('比赛试题')
@@ -230,11 +212,35 @@
 				});
 				
 				$('#main')
+					.append(new DetailTable({
+						columns: detailTableColumns
+					}).html())
 					.append(listTable.html()
 						.css({
+							'background':'whitesmoke',
+							'border':'lightgray dashed 2px',
+							'margin':'10px',
+							'width':'30%',
+							'float':'left',
 							'height':'auto'
-						}));
+						}))
+					.append($('<a href="#" title="修改描述" style="float: right;"><img src="image/pen.png" alt=""/></a>')
+						.click(modifyDescription.bind(null,data.Description)))
+					.append($('<div id="divContent" style="margin: 10px;"/>')
+						.css('width','70%')
+						.text(data.Description))
+					.append('<div class="clear"/>');
+				
 				listTable.showMore();
+				
+				new Moo().POST({
+					URI: '/ParseWiki',
+					data: {wiki:data.Description},
+					success: function(data){
+						$('#divContent').html(data);
+						$('pre code').each(function(i,e){hljs.highlightBlock(e);});
+					}
+				});
 			}
 		});
 	};

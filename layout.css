@@ -1,24 +1,36 @@
-/*TODO Add Wrapper*/
 #pageTopBar{
 	background: #094AB2;
 	color: white;
 	height: 40px;
+	line-height: 40px;
 }
 #pageTopBarLeft{
-	margin-top: 10px;
 	margin-left: 10px;
 	float: left;
 }
 #pageTopBarRight{
-	margin-top: 10px;
-	margin-right: 10px;
+	position: relative;
+	padding-right: 10px;
 	float: right;
+}
+#loggedUserImg{
+	width: 30px;
+	top: 5px;
+	left: -40px;
+	position: absolute;
+	vertical-align: middle;
+}
+#manageLink{
+	color: gold !important;
 }
 #pageTopBar  a{
 	color: white;
 }
 #pageTopBar  a:hover{
 	text-decoration: underline;
+}
+#pageBody{
+	margin-right: 1%;
 }
 #sidePanel{
 	float: left;
@@ -44,16 +56,18 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	opacity: .8;
+	opacity: .9;
 }
 #sidePanelBackground.normal{
 	opacity: .5;
 }
 #homepage{
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-left: 270px;
-	margin-right: 270px;
+	overflow: auto;
+	position: absolute;
+	top: 0;
+	left: 270px;
+	right: 270px;
+	bottom: 0;
 }
 #backToHomepage{
 	position: absolute;
@@ -83,11 +97,14 @@
 	padding-right: 20px;
 	font-size: large;
 	font-weight: bold;
-	font-family: sans-serif;
 	color: #202020;
+	transition: padding-left .5s;
+	-webkit-transition: padding-left .5s;
+	-moz-transition: padding-left .5s;
+	-o-transition: padding-left .5s;
 }
 #toolbar > li > a:hover{
-	background: lightgray;
+	padding-left: 30px;
 }
 #toolbar > li > hr{
 	width: 90%;
@@ -130,7 +147,6 @@
 	font-size: large;
 	font-weight: bold;
 	color: #404040;
-	font-family: sans-serif;
 }
 #copyPageURL{
 	color: gray;
@@ -149,19 +165,70 @@
 	height: 20px;
 	width: 100%;
 	color: #404040;
-	font-family: sans-serif;
+}
+
+#messagePanel{
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	width: 30%;
+}
+
+#messagePanel.normal{
+	right: 0%;
+}
+
+#messagePanel.hidden{
+	right: -29%;
+}
+
+#messagePanel.online{
+	background: green;
+}
+
+#messagePanel.offline{
+	background: darkgray;
+}
+
+#messagePanel.newMessage{
+	background: gold !important;
+}
+
+#msgBody{
+	width: 100%;
+	height: 100%;
+}
+
+#msgTitle{
+	font-size: x-large;
+	font-weight: bold;
+	padding: 10px;
+	color: whitesmoke;
+	overflow: hidden;
+	height: 30px;
+}
+
+#msgMain{
+	overflow: auto;
 }
 
 .metroBlock{
 	display: inline-block;
 	margin: 10px;
 	cursor: pointer;
+	transition: opacity .5s;
+	-webkit-transition: opacity .5s;
+	-moz-transition: opacity .5s;
+	-o-transition: opacity .5s;
+}
+.metroBlock:hover{
+	margin: 7px;
+	border: lightgray solid 3px;
 }
 .metroBlock .title{
 	margin: 10px;
 	color: white;
 	font-weight: bold;
-	font-family: sans-serif;
 }
 .metroBlock.small{
 	width: 180px;
@@ -171,10 +238,6 @@
 	width: 250px;
 	height: 120px;
 	opacity: .7;
-	transition: opacity .5s;
-	-webkit-transition: opacity .5s;
-	-moz-transition: opacity .5s;
-	-o-transition: opacity .5s;
 }
 .metroBlock.big:hover{
 	opacity: 1;

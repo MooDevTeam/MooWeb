@@ -47,7 +47,7 @@ function ListTable(params){
 						.hide()))));
 	//Menu
 	if(params.singleMenu)
-		this.singleMenu=this.buildMenu(params.singleMenu);
+		this.singleMenu=this.buildMenu(params.singleMenu,true);
 	if(params.multipleMenu)
 		this.multipleMenu=this.buildMenu(params.multipleMenu);
 	if(params.doubleMenu)
@@ -58,10 +58,9 @@ function ListTable(params){
 		.scroll(function(){
 			if(!self.loadOver && !self.loading){
 				var leftHeight=self.table.outerHeight(true)-$(this).height()-$(this).scrollTop();
-				if(leftHeight<0.2*$(this).height())
+				if(leftHeight<0.3*$(this).height())
 					self.showMore();
 			}
-			$('thead',self.table).css('top',$(this).scrollTop());
 		})
 		.append(this.singleMenu)
 		.append(this.multipleMenu)
@@ -69,7 +68,7 @@ function ListTable(params){
 		.append(this.table);
 }
 
-ListTable.prototype.buildMenu=function(menus){
+ListTable.prototype.buildMenu=function(menus,isSingle){
 	var self=this;
 	var htmlMenu=$('<ul class="menu"/>').hide();
 	
@@ -102,7 +101,10 @@ ListTable.prototype.buildMenu=function(menus){
 						htmlMenu.fadeOut('normal',function(){
 							var selected=$('tbody > tr.selected',self.table);
 							var datas=selected.map(function(){return $(this).data('ID');}).get();
-							menu.action(datas);
+							if(isSingle)
+								menu.action(datas[0]);
+							else
+								menu.action(datas);
 						});
 						return false;
 					})));
@@ -147,6 +149,7 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 		var tableRow=$('<tr/>');
 		self.bindRow(tableRow,dataRow);
 		tableRow
+			.css(dataRow.css?dataRow.css:{})
 			.click(self.onclick.bind(self,tableRow))
 			.contextmenu(self.oncontextmenu.bind(self,tableRow))
 			.dblclick(function(){
@@ -156,7 +159,7 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 			.data('ID',dataRow.ID)
 			.data('dblclick',dataRow.dblclick);
 		self.rowMap[dataRow.ID]=tableRow;
-		$('tbody',self.table).append(tableRow.hide().fadeIn('slow'));
+		$('tbody',self.table).append(tableRow.hide().fadeIn('slow').css('display','table-row'));
 	});
 	
 	if(callback && callback instanceof Function){
@@ -167,7 +170,9 @@ ListTable.prototype.addData=function(callback,data,haveMore){
 ListTable.prototype.bindRow=function(row,data){
 	var self=this;
 	row.html('');
+	row.data('data',data);
 	this.columns.forEach(function(column){
+		assert(column.field!==undefined);
 		row.append(self.dataToTD(data[column.field],column.type));
 	});
 }

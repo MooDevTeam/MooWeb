@@ -22,7 +22,7 @@
 				Type: $('#selType').val()
 			}},
 			success: function(){
-				MsgBar.show('info','修改成功');
+				new MsgBar('info','修改成功');
 				Page.refresh();
 			}
 		});

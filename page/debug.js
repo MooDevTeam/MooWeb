@@ -5,31 +5,25 @@
 	Page.item.debug.metroBlock=MetroBlock.item.help;
 	Page.item.debug.onload=function(){
 		$('#main')
-			.append('<input id="fileIn" type="file"/>')
+			.append('<input id="file" type="file" />')
 			.append($('<a href="#">ClickMe</a>')
 				.click(function(){
-					var file=$('#fileIn')[0].files[0];
 					var reader=new FileReader();
-					reader.readAsArrayBuffer(file);
+					reader.readAsArrayBuffer($('#file')[0].files[0]);
 					reader.onload=function(){
-						var worker=new Worker('compressor.js');
-						worker.onmessage=function(evt){
-							worker.terminate();
-							new Moo().sendBlob({
-								data: evt.data,
-								success: function(id){
-									console.log('Got id='+id);
-									new Moo().getBlob({
-										id: id,
-										success: function(data){
-											console.log(data);
-										}
-									});
-								}
-							});
-							console.log('Before: '+reader.result.byteLength+' After: '+evt.data.length);
+						var input=reader.result;
+						var worker=new Worker('zip.js/deflate.js');
+						worker.onmessage=function(e){
+							var msg=e.data;
+							console.log(msg);
+							
+							if(msg.oninit){
+								worker.postMessage({append:true,data: new Uint8Array(input)});
+							}else if(msg.onappend){
+								worker.postMessage({flush:true});
+							}
 						};
-						worker.postMessage(reader.result);
+						worker.postMessage({init:true});
 					};
 					return false;
 				}));

@@ -26,6 +26,13 @@ $(function(){
 	MsgBar.init();
 	Page.recentHash=location.hash;
 	
+	new Moo().GET({
+		URI: '/PublicKey?format=hex',
+		success: function(data){
+			Moo.publicKey=data;
+		}
+	});
+	
 	//TODO Debugging
 	//if(!Config.debug)
 	$(document).bind('keydown',function(e) {
@@ -41,19 +48,14 @@ $(function(){
 	$('#sidePanel')
 		.append($('<a href="#">Debug</a>')
 			.click(function(){
-				Prompt.string({
-					text: 'Please Input Problem ID',
-					value: 'init',
-					success: function(id){
-						alert(id);
-					}
-				});
+				Page.item.debug.load();
 				return false;
 			}));
-	*/
 	
+	*/
 	refreshUserInfo(function(){
 		if(Moo.currentUser){ //Success
+		
 			var queryString={};
 			if(window.location.hash.length>2)
 				queryString=parseURL(window.location.hash.substring(2));
@@ -65,20 +67,20 @@ $(function(){
 				$('#homepage').hide().fadeIn('slow');
 				
 				if(Math.random()<0.5){
-					$.get('tip.txt',function(data){
+					$.get('resources/tip.txt',function(data){
 						var tips=data.split(/\r\n?|\n/g);
 						var tip=tips[Math.floor(Math.random() * tips.length + 1)-1];
-						MsgBar.show('tip','<b>你知道吗？</b>'+tip);
+						new MsgBar('tip','<b>你知道吗？</b>'+tip);
 					});
 				}
 			}
 		}else{
-			MsgBar.show('warning',$('<div/>')
+			var msgBar=new MsgBar('warning',$('<div/>')
 				.append('您只有在登录后，才能使用Moo。需要现在')
 				.append($('<a href="#">登录</a>')
 					.click(function(){
-						$('.close',$(this).parent().parent()).click();
 						PopPage.item.login.load();
+						msgBar.close();
 						return false;
 					}))
 				.append('吗？'));
@@ -101,21 +103,31 @@ function refreshUserInfo(callback){
 	if(localStorage.mooToken || sessionStorage.mooToken){
 		moo.GET({
 			URI: '/CurrentUser',
-			noMessage: true,
 			success: function(userID){
-				$('#loggedIn').show();
-				$('#notLoggedIn').hide();
 				moo.GET({
 					URI: '/Users/'+userID,
 					success: function(user){
 						Moo.currentUser=user;
+						
+						$('#loggedIn').show();
+						$('#notLoggedIn').hide();
 						$('#loggedUserName').text(user.Name);
+						$('#loggedUserImg').attr('src',Gravatar.get(user.Email,30));
+						if(user.Role=='Worker' || user.Role=='Organizer'){
+							$('#manageLink').show();
+						}else{
+							$('#manageLink').hide();
+						}
+						
+						Message.tryLogin(false);
+						
 						if(callback instanceof Function){
 							callback();
 						}
 					}
 				});
-			}
+			},
+			unauthorized: function(){return false;}
 		});
 	}else{
 		clearUserInfo();
@@ -131,6 +143,7 @@ function clearUserInfo(){
 	$('#loggedIn').hide();
 	$('#notLoggedIn').show();
 	Moo.currentUser=null;
+	Message.logout();
 }
 
 function URLEncode(x){
@@ -175,6 +188,11 @@ function parseURL(arg){
 function URLDecode(str){
 	return decodeURIComponent(str.replace('+','%20'));
 }
+
+function htmlEncode(str){
+	return $('<div/>').text(str).html();
+}
+
 /**
 	[randNumMin,randNumMax)
 */

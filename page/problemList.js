@@ -11,7 +11,7 @@
 				href: {page:'recordList',userID:Moo.currentUser.ID,problemID:line.ID}
 			},
 			AverageScore: {
-				text: line.AverageScore==null?'':line.AverageScore,
+				text: line.AverageScore==null?'': Math.ceil(100*line.AverageScore)/100,
 				href: {page:'recordList',problemID:line.ID}
 			},
 			FullScore: line.FullScore,
@@ -27,9 +27,18 @@
 		var moo=new Moo();
 		moo.restore=callback.bind(null,[],false);
 		
-		var query={skip:start,top:Config.itemNumberEachTime};
+		var query={
+			skip: start,
+			top: Config.itemNumberEachTime,
+			full: true
+		};
 		if(params.tagID)
 			query.tagID=params.tagID;
+		if(params.order)
+			query.order=params.order;
+		if(params.nameContains)
+			query.nameContains=params.nameContains;
+		
 		
 		moo.GET({
 			URI: '/Problems',
@@ -57,13 +66,47 @@
 		params=_params;
 		$('#pageTitle').text('题目列表');
 		
+		$('#mainTopBarLeft')
+			.after($('<form id="tmpSearch" style="display:inline-block;"/>')
+				.submit(function(){
+					params.nameContains=$('#txtSearch').val();
+					Page.item.problemList.load(params);
+					return false;
+				})
+				.append($('<input id="txtSearch" type="text" class="small" required="required" placeholder="搜索题目名称（临时）"/>')
+					.val(params.nameContains===undefined?'':params.nameContains))
+				.append('<input id="btnSearch" type="submit" class="small" value="搜索"/>'))
+		
+		params.order=params.order || 'desc';
+		
 		$('#toolbar')
 			.append($('<li/>')
 				.append($('<a href="#">创建新题目</a>')
 					.click(function(){
 						Page.item.problemCreate.load();
 						return false;
-					})));
+					})))
+			.append('<li><hr/></li>');
+		
+		if(params.order=='desc'){
+			$('#toolbar')
+				.append($('<li/>')
+					.append($('<a href="#">正序显示</a>')
+						.click(function(){
+							params.order='asc';
+							Page.item.problemList.load(params);
+							return false;
+						})));
+		}else{
+			$('#toolbar')
+				.append($('<li/>')
+					.append($('<a href="#">逆序显示</a>')
+						.click(function(){
+							params.order='desc';
+							Page.item.problemList.load(params);
+							return false;
+						})));
+		}
 		
 		listTable=new ListTable({
 			columns: [
@@ -97,6 +140,7 @@
 		listTable.fillScreen();
 	};
 	Page.item.problemList.onunload=function(){
+		$('#tmpSearch').remove();
 	};
 	Page.item.problemList.metroBlock=MetroBlock.item.problem;
 })();

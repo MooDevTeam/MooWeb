@@ -18,7 +18,7 @@
 				EndTime: new Date($('#txtEndTime').val()).toMS(),
 			}},
 			success: function(id){
-				MsgBar.show('info','比赛创建成功，请酌情修改选项。');
+				new MsgBar('info','比赛创建成功，请酌情修改选项。');
 				Page.item.contestOption.load({id:id});
 			}
 		});

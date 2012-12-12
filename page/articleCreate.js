@@ -16,7 +16,7 @@
 				Content: $('#txtContent').val()
 			}},
 			success: function(data){
-				MsgBar.show('info','创建成功');
+				new MsgBar('info','创建成功');
 				Page.item.article.load({id:data});
 			}
 		});
@@ -47,7 +47,7 @@
 					id: 'txtContent',
 					placeholder: '内容'
 				}).html())
-				.append('<input id="btnSubmit" type="submit" value="创建"/>'));
+				.append('<div><input id="btnSubmit" type="submit" value="创建"/></div>'));
 	};
 	Page.item.articleCreate.onunload=function(){
 	};

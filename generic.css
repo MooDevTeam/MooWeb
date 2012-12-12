@@ -1,5 +1,7 @@
 body{
 	margin: 0;
+	overflow: hidden;
+	font-family: "Microsoft YaHei", "wqy-microhei", sans-serif;
 }
 a{
 	text-decoration: none;
@@ -10,8 +12,6 @@ img{
 	border: none;
 }
 caption{
-	border-top: blue dotted 2px;
-	padding-top: 10px;
 	font-weight: bold;
 	font-size: large;
 }
@@ -26,7 +26,7 @@ input.small{
 input[type='text'],input[type='password'],input[type='email'],input[type='number']{
 	width: 200px;
 }
-input[type='submit'],input[type='button']{
+input[type='submit'],input[type='button'],input[type='reset']{
 	background: #1e82cc;
 	color: white;
 	border: none;
@@ -34,10 +34,9 @@ input[type='submit'],input[type='button']{
 	padding-bottom: 7px;
 	padding-left: 20px;
 	padding-right: 20px;
-	font-family: sans-serif;
 	font-weight: bold;
 }
-input.small[type='submit'],input.small[type='button']{
+input.small[type='submit'],input.small[type='button'],input.small[type='reset']{
 	padding-top: 3px;
 	padding-bottom: 3px;
 	padding-left: 10px;

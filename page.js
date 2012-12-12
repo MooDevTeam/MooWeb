@@ -11,6 +11,7 @@ function Page(){
 Page.item={};
 Page.recentHash=null;
 Page.currentPage = null;
+Page.loading=false;
 
 Page.pollHash=function(){
 	if(location.hash!=Page.recentHash){
@@ -44,14 +45,16 @@ Page.redirect=function(url){
 Page.backToHomepage=function(){
 	if(Page.currentPage){
 		Page.currentPage.unload();
+		Page.currentPage=null;
+		Page.recentHash='#!';
+		location.hash='#!';
+		Layout.backToHomepage();
 	}
-	Page.currentPage=null;
-	Page.recentHash='#!';
-	location.hash='#!';
-	Layout.backToHomepage();
 }
 
 Page.prototype.load=function(params){
+	if(Page.loading)return;
+	Page.loading=true;
 	if(Page.currentPage){
 		Page.currentPage.unload(this.doLoad.bind(this,params,Page.currentPage));
 		Page.currentPage=null;
@@ -66,14 +69,18 @@ Page.prototype.doLoad=function(params,previousPage){
 		Layout.showMetroBlock(this.metroBlock,function(){
 			$('#main').fadeIn();
 			$('#toolbar').fadeIn();
+			Page.loading=false;
 		});
 	}else if(previousPage.metroBlock!=this.metroBlock){
 		$('#main').fadeIn();
 		$('#toolbar').fadeIn();
-		Layout.switchMetroBlock(this.metroBlock);
+		Layout.switchMetroBlock(this.metroBlock,function(){
+			Page.loading=false;
+		});
 	}else{
 		$('#main').fadeIn();
 		$('#toolbar').fadeIn();
+		Page.loading=false;
 	}
 	
 	params=params || {};

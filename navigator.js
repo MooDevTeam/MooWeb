@@ -17,9 +17,11 @@
 Navigator.tooOld=function(){
 	var tests=[
 		function(){return window.localStorage && window.sessionStorage;},
-		function(){return window.FileReader;}
+		function(){return window.FileReader;},
+		function(){return window.ArrayBuffer && window.Uint8Array;},
+		function(){return window.Worker;},
+		function(){return $('<input type="text"/>')[0].setCustomValidity;},
+		function(){return window.WebSocket;}
 	];
-	if(Navigator.IE && Number(Navigator.IE.match(/^\d+/)[0])<=9)
-		return true;
-	return false;
+	return !tests.every(function(test){return !!test();});
 };

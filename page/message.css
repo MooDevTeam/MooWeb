@@ -1,0 +1,28 @@
+﻿.msgEntry{
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.msgEntry > div{
+	display: inline-block;
+	width: 80%;
+	text-align: left;
+	padding: 10px;
+	box-shadow: 2px 2px 7px gray;
+}
+.msgEntry.fromMe > div{
+	background: lightcyan;
+}
+.msgEntry.fromOthers > div{
+	background: white;
+}
+.msgEntry.fromMe{
+	text-align: right;
+}
+.msgEntry .header{
+	font-size: small;
+	color: gray;
+}
+.msgEntry.fromMe .header{
+	text-align: right;
+}

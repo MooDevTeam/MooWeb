@@ -40,3 +40,20 @@
 	margin-left: 10px;
 	margin-right: 10px;
 }
+.wikiEditor .selectImage{
+	position: absolute;
+	background: whitesmoke;
+	border: lightgray solid 1px;
+	padding: 10px;
+}
+.wikiEditor .selectImage .close{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	color: whitesmoke;
+	background: #094AB2;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+}

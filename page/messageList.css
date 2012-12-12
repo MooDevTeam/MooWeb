@@ -1,0 +1,27 @@
+﻿#contactList{
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+#contactList li a{
+	font-size: large;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	display: block;
+	height: 100%;
+	color: lightgray;
+}
+
+.online li a:hover{
+	background: darkgreen;
+}
+
+.offline li a:hover{
+	background: gray;
+}

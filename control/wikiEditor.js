@@ -70,6 +70,15 @@ function WikiEditor(params){
 					self.textarea.trigger('input');
 					return false;
 				}))
+			.append($('<a href="#" tabIndex="-1" title="图片">P</a>')
+				.click(function(){
+					if(!self.selectImage){
+						var off=$(this).offset();
+						off.top+=$(this).outerHeight(true);
+						self.showSelectImage(off,self.textarea.selectionStart,self.textarea.selectionEnd);
+					}
+					return false;
+				}))
 			.append($('<a href="#" tabIndex="-1" title="更多Wiki格式">…</a>')
 				.click(function(){
 					//TODO Name it
@@ -159,3 +168,41 @@ WikiEditor.prototype.warpText=function(prefix,tip,suffix,selectionStart,selectio
 		this.textarea[0].selectionEnd=selStart+prefix.length+textSelected.length+suffix.length;
 	}
 }
+
+WikiEditor.prototype.showSelectImage=function(offset,selSt,selEd){
+	var self=this;
+	this.editor
+		.append(this.selectImage=$('<form class="selectImage"/>')
+			.submit(function(){
+				var imageWiki='[image:'+self.selectImageID.val();
+				if(self.selectImageWidth.val())
+					imageWiki+=',width='+self.selectImageWidth.val();
+				if(self.selectImageHeight.val())
+					imageWiki+=',height='+self.selectImageHeight.val();
+				imageWiki+=']';
+				self.warpText(imageWiki,'','',selSt,selEd);
+				
+				self.selectImage.fadeOut(function(){$(this).remove();});
+				delete self.selectImage;
+				return false;
+			})
+			.append($('<a class="close" href="#">×</a>')
+				.click(function(){
+					self.selectImage.fadeOut(function(){$(this).remove();});
+					delete self.selectImage;
+					return false;
+				}))
+			.append($('<div/>')
+				.append(this.selectImageID=new AutoInput({
+					type: 'file',
+					placeholder: '图片文件',
+					required: true
+				}).html()))
+			.append($('<div/>')
+				.append(this.selectImageWidth=$('<input type="number" placeholder="宽度(可选)"/>'))
+				.append(this.selectImageHeight=$('<input type="number" placeholder="高度(可选)"/>')))
+			.append($('<div/>')
+				.append(this.selectImageSubmit=$('<input type="submit" value="插入图片"/>'))));
+	this.selectImage.offset(offset);
+	
+};
