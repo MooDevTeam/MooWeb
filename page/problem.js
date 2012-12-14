@@ -105,8 +105,7 @@
 					.append($('<a href="#" style="float: right;" title="修改内容"><img src="image/pen.png" alt="Modify Content"/></a>')
 							.click(modifyContent.bind(null,data.Content)))
 					.append($('<div id="content"/>')
-						.css('margin','10px')
-						.text(data.Content));
+						.css('margin','10px'));
 				
 				moo.POST({
 					URI: '/ParseWiki',

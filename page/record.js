@@ -1,7 +1,6 @@
 ﻿"use strict";
 (function(){
 	var params;
-	var autoRefreshHandle;
 	
 	function modifyPublicCode(old){
 		new Moo().PUT({
@@ -27,19 +26,6 @@
 		moo.GET({
 			URI: '/Records/'+params.id,
 			success: function(data){
-				
-				if(data.Score===null || data.Score==-1){//Auto Refresh
-					autoRefreshHandle=setInterval(function(){
-						new Moo().GET({
-							URI: '/Records/'+params.id,
-							success: function(newData){
-								if(newData.Score!==data.Score)
-									Page.refresh();
-							}
-						});
-					},2000);
-				}
-				
 				var columns=[
 					{title:'题目',type:'html',data:Link.problem(data.Problem)},
 					{title:'用户',type:'html',data:Link.user(data.User)},
@@ -82,7 +68,7 @@
 				}
 				if(data.JudgeInfo!=null){
 					$('#area')
-						.append($('<div id="judgeInfo"/>').text(data.JudgeInfo));
+						.append($('<div id="judgeInfo"/>'));
 					moo.POST({
 						URI: '/ParseWiki',
 						data: {wiki:data.JudgeInfo},
@@ -96,9 +82,8 @@
 		});
 	};
 	Page.item.record.onunload=function(){
-		if(autoRefreshHandle!==undefined){
-			clearInterval(autoRefreshHandle);
-			autoRefreshHandle=undefined;
-		}
+	};
+	Page.item.record.getID=function(){
+		return params.id;
 	};
 })();

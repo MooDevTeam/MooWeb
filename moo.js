@@ -197,7 +197,7 @@ Moo.prototype.sendBlob=function(params){
 	//xhr.send(new Blob([new Uint8Array(params.data)]));
 	xhr.send(params.data);
 };
-
+/*
 Moo.prototype.getBlob=function(params){
 	this.params=params;
 	
@@ -214,10 +214,4 @@ Moo.prototype.getBlob=function(params){
 	xhr.responseType='arraybuffer';
 	xhr.send();
 };
-
-Moo.newWebSocket=function(forceLogin){
-	var url=Moo.WEBSOCKETS_API+'?Auth='+localStorage.mooToken || sessionStorage.mooToken;
-	if(forceLogin)
-		url+='&forceLogin=true';
-	return new WebSocket(url);
-}
+*/

@@ -22,6 +22,20 @@
 			URI: '/Messages/Contacts',
 			success: function(data){
 				data.forEach(function(line){
+					if(line.UnRead>0){
+						if(MsgBox.contains('MessageFrom'+line.ID)){
+							MsgBox.setNumber('MessageFrom'+line.ID,line.UnRead);
+						}else{
+							MsgBox.add($('<span/>')
+								.append($('<img alt="" style="vertical-align:middle;"/>')
+									.attr('src',Gravatar.get(line.Email,40)))
+								.append($('<span/>').text(line.Name)),function(){
+									Message.item.main.load({id:line.ID});
+								},'MessageFrom'+line.ID);
+							MsgBox.setNumber('MessageFrom'+line.ID,line.UnRead);
+						}
+					}
+					
 					var htmlLi=$('<li/>')
 						.append($('<a href="#"/>')
 							.append($('<img alt="" style="vertical-align: middle;"/>')

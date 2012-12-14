@@ -40,6 +40,14 @@ Layout.init=function(){
 				.append($('<div id="msgBody"/>')
 					.append('<div id="msgTitle"/>')
 					.append('<div id="msgMain"/>')))
+			.append($('<div id="msgBox" class="hidden"/>')
+				.disableSelection()
+				.append($('<div id="msgBoxTitle">消息盒子</div>')
+					.append($('<div id="msgBoxTitleControl"/>')
+						.append('<a id="showMsgBox" href="#">+</a>')
+						.append('<a id="hideMsgBox" href="#" style="display:none;">-</a>')))
+				.append($('<ul id="msgBoxList" style="display:none;"/>')
+					.append('<li id="msgBoxEmpty">目前没有消息</li>')))
 			.append('<div class="clear"/>'));
 	/*
 	//Auto Hide
@@ -137,6 +145,16 @@ Layout.init=function(){
 		if(Page.currentPage){
 			Page.refresh();
 		}
+		return false;
+	});
+	
+	$('#showMsgBox').click(function(){
+		MsgBox.show();
+		return false;
+	});
+	
+	$('#hideMsgBox').click(function(){
+		MsgBox.hide();
 		return false;
 	});
 

@@ -227,8 +227,7 @@
 					.append($('<a href="#" title="修改描述" style="float: right;"><img src="image/pen.png" alt=""/></a>')
 						.click(modifyDescription.bind(null,data.Description)))
 					.append($('<div id="divContent" style="margin: 10px;"/>')
-						.css('width','70%')
-						.text(data.Description))
+						.css('width','70%'))
 					.append('<div class="clear"/>');
 				
 				listTable.showMore();

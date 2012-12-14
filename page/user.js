@@ -137,8 +137,7 @@
 					.append($('<img alt="" style="float: right; margin: 10px;"/>')
 						.attr('src',Gravatar.get(data.Email,120)))
 					.append($('<div id="divContent"/>')
-						.css('margin','10px')
-						.text(data.Description));
+						.css('margin','10px'));
 				new Moo().POST({
 					URI: '/ParseWiki',
 					data: {wiki:data.Description},

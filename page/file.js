@@ -74,8 +74,7 @@
 					.append($('<a href="#" style="float:right;"><img src="image/pen.png" alt="Modify Description"/></a>')
 						.click(modifyDescription.bind(null,data.Description)))
 					.append($('<div id="content"/>')
-						.css('padding','10px')
-						.text(data.Description));
+						.css('padding','10px'));
 				new Moo().POST({
 					URI: '/ParseWiki',
 					data: {wiki:data.Description},

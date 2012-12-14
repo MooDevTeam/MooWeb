@@ -14,8 +14,7 @@
 						.append(Link.user(data.From))
 						.append(' ')
 						.append(data.CreateTime.toString()))
-					.append(divContent=$('<div class="content"/>')
-						.text(data.Content)));
+					.append(divContent=$('<div class="content"/>')));
 		new Moo().POST({
 			URI: '/ParseWiki',
 			data: {wiki:data.Content},
@@ -126,6 +125,10 @@
 		latestMsgID=earliestMsgID=undefined;
 		loading=false;
 		isOver=false;
+		
+		if(MsgBox.contains('MessageFrom'+params.id)){
+			MsgBox.remove('MessageFrom'+params.id);
+		}
 		
 		if(params.id==null){
 			$('#msgTitle')
